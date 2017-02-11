@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">SimpleBudget</string>
+    <string name="action_modify_categories">Modify categories</string>
+    <string name="category_label">Category</string>
+    <string name="amount_label">Amount</string>
+    <string name="submitButton">Log</string>
+</resources>
