@@ -15,8 +15,12 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,9 +44,8 @@ public class CalendarActivity extends AppCompatActivity {
 
     private void initializeCalendar() {
         MaterialCalendarView calender = (MaterialCalendarView) findViewById(R.id.calendarView);
-        calender.setDateSelected(new CalendarDay(new Date()), true);
 
-        List<BudgetEntry> entries = BudgetEntryDbManager.getEntriesInRange(getApplicationContext(), "2017-01-01", "2017-12-31");
+        final List<BudgetEntry> entries = BudgetEntryDbManager.getEntriesInRange(getApplicationContext(), "1970-01-01", "2032-12-31");
         final HashSet<CalendarDay> daysToDecorate = new HashSet<>();
         for(BudgetEntry entry : entries) {
             // Note that CalendarDay has zero indiced months
@@ -64,11 +67,35 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
+        calender.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(MaterialCalendarView widget, CalendarDay date, boolean selected) {
+                updateSelection(date);
+            }
+        });
+
+        CalendarDay today = new CalendarDay(new Date());
+        calender.setDateSelected(today, true);
+        updateSelection(today);
+    }
+
+    private void updateSelection(CalendarDay date) {
+        String iso8601Date = new SimpleDateFormat("yyyy-MM-dd").format(date.getDate());
+        List<BudgetEntry> selectedEntries = BudgetEntryDbManager.getEntriesInRange(getApplicationContext(), iso8601Date, iso8601Date);
+
+        TextView dateLabel = (TextView) findViewById(R.id.dateLabel);
+        dateLabel.setText("Entries on " + iso8601Date + ":");
+
         TextView entryList = (TextView) findViewById(R.id.entryList);
-        entryList.setText("arsef\nsdfsdf\narsef\n" +
-                "sdfsdf\narsef\n" +
-                "sdfsdf\narsef\n" +
-                "sdfsdf\n");
+        entryList.setText("");
+        for (BudgetEntry entry : selectedEntries) {
+            entryList.append(String.format("$%.2f [%s]\n", entry.amount / 100.0, entry.category));
+        }
+
+        // Handle possibility of no entries
+        if (selectedEntries.isEmpty()) {
+            entryList.setText("Nothing to show here...");
+        }
     }
 }
 
