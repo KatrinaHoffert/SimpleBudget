@@ -14,8 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AddToBudgetActivity extends AppCompatActivity {
@@ -38,10 +41,20 @@ public class AddToBudgetActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 String category = categorySelect.getSelectedItem().toString();
+
                 EditText amountInput = (EditText) findViewById(R.id.amountInput);
                 String amount = amountInput.getText().toString();
+                String[] amountSplit = amount.split("\\.");
+                int amountInCents = amountSplit.length > 1 ? Integer.parseInt(amountSplit[0]) * 100 + Integer.parseInt(amountSplit[1]) :
+                        Integer.parseInt(amountSplit[0]) * 100;
 
-                // TODO: Save to DB
+                String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                BudgetEntryDbManager.addEntry(getApplicationContext(), amountInCents, category, currentDate);
+
+                // Inform the user that the entry was added
+                amountInput.setText("");
+                Toast.makeText(getApplicationContext(), getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
             }
         });
     }

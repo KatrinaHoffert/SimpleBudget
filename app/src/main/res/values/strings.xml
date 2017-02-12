@@ -4,4 +4,5 @@
     <string name="category_label">Category</string>
     <string name="amount_label">Amount</string>
     <string name="submitButton">Log</string>
+    <string name="submitEntrySuccess">Entry has been recorded</string>
 </resources>
