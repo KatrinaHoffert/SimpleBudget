@@ -21,7 +21,6 @@ import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 
 public class AddToBudgetActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
