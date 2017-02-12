@@ -7,4 +7,8 @@
     <string name="submitEntrySuccess">Entry has been recorded</string>
     <string name="title_activity_calendar">SimpleBudget: Calendar</string>
     <string name="action_settings">Settings</string>
+    <string name="entries_header">Entries on %s:</string>
+    <string name="no_entries">There's nothing here...</string>
+    <string name="month_stats_button">Month stats</string>
+    <string name="day_stats_button">Day stats</string>
 </resources>

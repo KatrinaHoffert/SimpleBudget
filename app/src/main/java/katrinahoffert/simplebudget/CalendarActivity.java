@@ -114,7 +114,7 @@ public class CalendarActivity extends AppCompatActivity {
         List<BudgetEntry> selectedEntries = BudgetEntryDbManager.getEntriesInRange(getApplicationContext(), iso8601Date, iso8601Date);
 
         TextView dateLabel = (TextView) findViewById(R.id.dateLabel);
-        dateLabel.setText("Entries on " + iso8601Date + ":");
+        dateLabel.setText(String.format(getResources().getString(R.string.entries_header), iso8601Date));
 
         TextView entryList = (TextView) findViewById(R.id.entryList);
         entryList.setText("");
@@ -124,7 +124,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         // Handle possibility of no entries
         if (selectedEntries.isEmpty()) {
-            entryList.setText("Nothing to show here...");
+            entryList.setText(getResources().getString(R.string.no_entries));
         }
     }
 
