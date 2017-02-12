@@ -5,7 +5,6 @@
     <string name="amount_label">Amount</string>
     <string name="submitButton">Log</string>
     <string name="submitEntrySuccess">Entry has been recorded</string>
-    <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="title_activity_calendar">SimpleBudget: Calendar</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
