@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,12 +23,16 @@ import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 
 public class AddToBudgetActivity extends AppCompatActivity {
+    private Animation errorShakeAnim;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_to_budget);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        errorShakeAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
 
         List<String> categories =  CategoryDbManager.getCategories(getApplicationContext());
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -77,9 +83,20 @@ public class AddToBudgetActivity extends AppCompatActivity {
 
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
         String amount = amountInput.getText().toString();
+
+        // Detect invalid inputs
+        if(!amount.matches("-?\\d*\\.\\d{0,2}")) {
+            amountInput.startAnimation(errorShakeAnim);
+            return;
+        }
+
         String[] amountSplit = amount.split("\\.");
-        int amountInCents = amountSplit.length > 1 ? Integer.parseInt(amountSplit[0]) * 100 + Integer.parseInt(amountSplit[1]) :
-                Integer.parseInt(amountSplit[0]) * 100;
+        int dollarAmount = !amountSplit[0].equals("") ? Integer.parseInt(amountSplit[0]) * 100 : 0;
+        int sign = dollarAmount < 0 ? -1 : 1;
+        int centsAmount = amountSplit.length > 1 ? Integer.parseInt(amountSplit[1]) : 0;
+        // Correct if cents was only one digit
+        if(centsAmount != 0 && amountSplit[1].length() == 1) centsAmount *= 10;
+        int amountInCents = sign * (Math.abs(dollarAmount) + centsAmount);
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
