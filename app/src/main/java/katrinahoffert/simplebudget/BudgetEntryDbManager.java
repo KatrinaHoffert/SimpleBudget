@@ -2,26 +2,18 @@ package katrinahoffert.simplebudget;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
-import static katrinahoffert.simplebudget.DbContract.BudgetEntry;
+import katrinahoffert.simplebudget.model.BudgetEntry;
 
-public class BudgetEntryDbManager extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "SimpleBudget.db";
-    private static final String SQL_CREATE_TABLE = "CREATE TABLE " + BudgetEntry.TABLE_NAME + " (" +
-            BudgetEntry._ID + " INTEGER PRIMARY KEY," +
-            BudgetEntry.COLUMN_NAME_CATEGORY_ID + " INTEGER," +
-            BudgetEntry.COLUMN_NAME_AMOUNT + " INTEGER," +
-            BudgetEntry.COLUMN_NAME_DATE + " TEXT)";
+import static katrinahoffert.simplebudget.DbContract.BudgetEntryTable;
+import static katrinahoffert.simplebudget.DbContract.CategoryTable;
 
-    public BudgetEntryDbManager(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
+public class BudgetEntryDbManager {
     /**
      * Inserts an entry to the database, representing some spending (or income).
      * @param amount The amount in *cents*. Can be negative to represent income.
@@ -31,24 +23,39 @@ public class BudgetEntryDbManager extends SQLiteOpenHelper {
     public static void addEntry(Context context, int amount, String category, String date) {
         int categoryId = CategoryDbManager.getCategoryId(context, category);
 
-        BudgetEntryDbManager dbManager = new BudgetEntryDbManager(context);
+        DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(BudgetEntry.COLUMN_NAME_AMOUNT, amount);
-        values.put(BudgetEntry.COLUMN_NAME_CATEGORY_ID, categoryId);
-        values.put(BudgetEntry.COLUMN_NAME_DATE, date);
-        db.insert(BudgetEntry.TABLE_NAME, null, values);
+        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, amount);
+        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, categoryId);
+        values.put(BudgetEntryTable.COLUMN_NAME_DATE, date);
+        db.insert(BudgetEntryTable.TABLE_NAME, null, values);
         db.close();
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_TABLE);
-    }
+    public static List<BudgetEntry> getEntriesInRange(Context context, String startDate, String endDate) {
+        String query = "SELECT * FROM " + BudgetEntryTable.TABLE_NAME + " INNER JOIN " +
+                CategoryTable.TABLE_NAME + " ON " + BudgetEntryTable.TABLE_NAME + "." +
+                BudgetEntryTable.COLUMN_NAME_CATEGORY_ID + " = " + CategoryTable.TABLE_NAME +
+                "." + CategoryTable._ID + " WHERE " + BudgetEntryTable.COLUMN_NAME_DATE +
+                " BETWEEN ? AND ?";
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // No upgrades yet...
+        DbManager dbManager = new DbManager(context);
+        SQLiteDatabase db = dbManager.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{startDate, endDate});
+
+        List<BudgetEntry> entries = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            BudgetEntry entry = new BudgetEntry();
+            entry.category = cursor.getString(cursor.getColumnIndexOrThrow(CategoryTable.COLUMN_NAME_CATEGORY_NAME));
+            entry.date = cursor.getString(cursor.getColumnIndexOrThrow(BudgetEntryTable.COLUMN_NAME_DATE));
+            entry.amount = cursor.getInt(cursor.getColumnIndexOrThrow(BudgetEntryTable.COLUMN_NAME_AMOUNT));
+            entries.add(entry);
+        }
+        cursor.close();
+        db.close();
+
+        return entries;
     }
 }
