@@ -1,4 +1,4 @@
-package katrinahoffert.simplebudget;
+package katrinahoffert.simplebudget.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static katrinahoffert.simplebudget.DbContract.CategoryTable;
 
 public class CategoryDbManager {
     /**
@@ -21,8 +19,8 @@ public class CategoryDbManager {
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(CategoryTable.COLUMN_NAME_CATEGORY_NAME, category);
-        db.insert(CategoryTable.TABLE_NAME, null, values);
+        values.put(DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME, category);
+        db.insert(DbContract.CategoryTable.TABLE_NAME, null, values);
         db.close();
     }
 
@@ -36,18 +34,18 @@ public class CategoryDbManager {
         SQLiteDatabase db = dbManager.getReadableDatabase();
 
         Cursor cursor = db.query(
-                CategoryTable.TABLE_NAME,
-                new String[]{CategoryTable.COLUMN_NAME_CATEGORY_NAME},
+                DbContract.CategoryTable.TABLE_NAME,
+                new String[]{DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME},
                 null,
                 null,
                 null,
                 null,
-                CategoryTable.COLUMN_NAME_CATEGORY_NAME + " ASC"
+                DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME + " ASC"
         );
 
         List<String> categories = new ArrayList<>();
         while(cursor.moveToNext()) {
-            categories.add(cursor.getString(cursor.getColumnIndexOrThrow(CategoryTable.COLUMN_NAME_CATEGORY_NAME)));
+            categories.add(cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME)));
         }
         cursor.close();
         db.close();
@@ -67,9 +65,9 @@ public class CategoryDbManager {
         SQLiteDatabase db = dbManager.getReadableDatabase();
 
         Cursor cursor = db.query(
-                CategoryTable.TABLE_NAME,
-                new String[]{CategoryTable._ID},
-                CategoryTable.COLUMN_NAME_CATEGORY_NAME + " = ?",
+                DbContract.CategoryTable.TABLE_NAME,
+                new String[]{DbContract.CategoryTable._ID},
+                DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME + " = ?",
                 new String[]{category},
                 null,
                 null,
@@ -78,7 +76,7 @@ public class CategoryDbManager {
 
         int categoryId = -1;
         while(cursor.moveToNext()) {
-            categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(CategoryTable._ID));
+            categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.CategoryTable._ID));
         }
         cursor.close();
         db.close();

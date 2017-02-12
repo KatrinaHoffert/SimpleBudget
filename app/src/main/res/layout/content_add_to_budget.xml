@@ -17,10 +17,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/categorySelect"
         android:layout_below="@+id/categoryLabel"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignLeft="@+id/amountInput"
+        android:layout_alignStart="@+id/amountInput"
+        android:layout_alignRight="@+id/amountInput"
+        android:layout_alignEnd="@+id/amountInput" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -58,4 +58,13 @@
         android:id="@+id/submitButton"
         android:layout_below="@+id/amountInput"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View calendar"
+        android:id="@+id/calendarButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="62dp" />
 </RelativeLayout>

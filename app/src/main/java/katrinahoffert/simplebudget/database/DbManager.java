@@ -1,12 +1,12 @@
-package katrinahoffert.simplebudget;
+package katrinahoffert.simplebudget.database;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static katrinahoffert.simplebudget.DbContract.CategoryTable;
-import static katrinahoffert.simplebudget.DbContract.BudgetEntryTable;
+import static katrinahoffert.simplebudget.database.DbContract.CategoryTable;
+import static katrinahoffert.simplebudget.database.DbContract.BudgetEntryTable;
 
 public class DbManager extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;

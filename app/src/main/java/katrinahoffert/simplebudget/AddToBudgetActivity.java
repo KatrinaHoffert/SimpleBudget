@@ -1,5 +1,6 @@
 package katrinahoffert.simplebudget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
+import katrinahoffert.simplebudget.database.CategoryDbManager;
+
 public class AddToBudgetActivity extends AppCompatActivity {
 
     @Override
@@ -26,30 +30,22 @@ public class AddToBudgetActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         List<String> categories =  CategoryDbManager.getCategories(getApplicationContext());
-
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        final Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
+        Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
         categorySelect.setAdapter(adapter);
 
         Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String category = categorySelect.getSelectedItem().toString();
+                addBudgetEntry();
+            }
+        });
 
-                EditText amountInput = (EditText) findViewById(R.id.amountInput);
-                String amount = amountInput.getText().toString();
-                String[] amountSplit = amount.split("\\.");
-                int amountInCents = amountSplit.length > 1 ? Integer.parseInt(amountSplit[0]) * 100 + Integer.parseInt(amountSplit[1]) :
-                        Integer.parseInt(amountSplit[0]) * 100;
-
-                String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-                BudgetEntryDbManager.addEntry(getApplicationContext(), amountInCents, category, currentDate);
-
-                // Inform the user that the entry was added
-                amountInput.setText("");
-                Toast.makeText(getApplicationContext(), getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+        Button calendarButton = (Button) findViewById(R.id.calendarButton);
+        calendarButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showCalendar();
             }
         });
     }
@@ -74,5 +70,28 @@ public class AddToBudgetActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void addBudgetEntry() {
+        Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
+        String category = categorySelect.getSelectedItem().toString();
+
+        EditText amountInput = (EditText) findViewById(R.id.amountInput);
+        String amount = amountInput.getText().toString();
+        String[] amountSplit = amount.split("\\.");
+        int amountInCents = amountSplit.length > 1 ? Integer.parseInt(amountSplit[0]) * 100 + Integer.parseInt(amountSplit[1]) :
+                Integer.parseInt(amountSplit[0]) * 100;
+
+        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+        BudgetEntryDbManager.addEntry(getApplicationContext(), amountInCents, category, currentDate);
+
+        // Inform the user that the entry was added
+        amountInput.setText("");
+        Toast.makeText(getApplicationContext(), getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+    }
+
+    private void showCalendar() {
+        AddToBudgetActivity.this.startActivity(new Intent(AddToBudgetActivity.this, CalendarActivity.class));
     }
 }

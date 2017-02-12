@@ -1,4 +1,4 @@
-package katrinahoffert.simplebudget;
+package katrinahoffert.simplebudget.database;
 
 import android.provider.BaseColumns;
 
