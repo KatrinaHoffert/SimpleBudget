@@ -27,10 +27,7 @@ public class AddToBudgetActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<String> categories =  new ArrayList<String>();
-        categories.add("Cat1");
-        categories.add("Cat2");
-        // TODO: Get from DB
+        List<String> categories =  CategoryDbManager.getCategories(getApplicationContext());
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
