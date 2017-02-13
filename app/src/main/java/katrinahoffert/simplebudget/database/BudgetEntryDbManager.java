@@ -10,6 +10,9 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.model.BudgetEntry;
 
+import static katrinahoffert.simplebudget.database.DbContract.BudgetEntryTable;
+import static katrinahoffert.simplebudget.database.DbContract.CategoryTable;
+
 public class BudgetEntryDbManager {
     /**
      * Inserts an entry to the database, representing some spending (or income).
@@ -31,12 +34,19 @@ public class BudgetEntryDbManager {
         db.close();
     }
 
+    /**
+     * Obtains the budget entry items for all days within the date range (inclusive).
+     * @param context The application context.
+     * @param startDate The lower bound of the date range.
+     * @param endDate The upper bound of the date range.
+     * @return BudgetEntry items within the date range.
+     */
     public static List<BudgetEntry> getEntriesInRange(Context context, String startDate, String endDate) {
-        String query = "SELECT * FROM " + DbContract.BudgetEntryTable.TABLE_NAME + " INNER JOIN " +
-                DbContract.CategoryTable.TABLE_NAME + " ON " + DbContract.BudgetEntryTable.TABLE_NAME + "." +
-                DbContract.BudgetEntryTable.COLUMN_NAME_CATEGORY_ID + " = " + DbContract.CategoryTable.TABLE_NAME +
-                "." + DbContract.CategoryTable._ID + " WHERE " + DbContract.BudgetEntryTable.COLUMN_NAME_DATE +
-                " BETWEEN ? AND ?";
+        String query = "SELECT b." + BudgetEntryTable._ID + ", b." + BudgetEntryTable.COLUMN_NAME_AMOUNT +
+                ", b." + BudgetEntryTable.COLUMN_NAME_DATE + ", c." + CategoryTable.COLUMN_NAME_CATEGORY_NAME +
+                " FROM " + BudgetEntryTable.TABLE_NAME + " b INNER JOIN " + CategoryTable.TABLE_NAME +
+                " c ON b." + BudgetEntryTable.COLUMN_NAME_CATEGORY_ID + " = c." + CategoryTable._ID +
+                " WHERE " + BudgetEntryTable.COLUMN_NAME_DATE + " BETWEEN ? AND ?";
 
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getReadableDatabase();
@@ -45,6 +55,7 @@ public class BudgetEntryDbManager {
         List<BudgetEntry> entries = new ArrayList<>();
         while(cursor.moveToNext()) {
             BudgetEntry entry = new BudgetEntry();
+            entry._id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable._ID));
             entry.category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME));
             entry.date = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable.COLUMN_NAME_DATE));
             entry.amount = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable.COLUMN_NAME_AMOUNT));

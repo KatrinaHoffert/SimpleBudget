@@ -163,12 +163,12 @@ public class CalendarActivity extends AppCompatActivity {
 
         // Edit
         if(item.getItemId() == 0) {
-            Log.d("TODO", "Editing " + selectedEntries.get(info.position).amount);
+            Log.d("TODO", "Editing " + selectedEntries.get(info.position)._id);
             return true;
         }
         // Delete
         else if(item.getItemId() == 1) {
-            Log.d("TODO", "Deleting " + selectedEntries.get(info.position).amount);
+            Log.d("TODO", "Deleting " + selectedEntries.get(info.position)._id);
             return true;
         }
 
