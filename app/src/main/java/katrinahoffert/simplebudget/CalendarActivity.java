@@ -5,6 +5,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,6 +31,7 @@ import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
 
 public class CalendarActivity extends AppCompatActivity {
+    private List<BudgetEntry> selectedEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +119,7 @@ public class CalendarActivity extends AppCompatActivity {
      */
     private void updateSelection(CalendarDay date) {
         String iso8601Date = calendarDayToString(date);
-        final List<BudgetEntry> selectedEntries = BudgetEntryDbManager.getEntriesInRange(this, iso8601Date, iso8601Date);
+        selectedEntries = BudgetEntryDbManager.getEntriesInRange(this, iso8601Date, iso8601Date);
 
         TextView dateLabel = (TextView) findViewById(R.id.dateLabel);
         dateLabel.setText(String.format(getResources().getString(R.string.entries_header), iso8601Date));
@@ -133,27 +137,42 @@ public class CalendarActivity extends AppCompatActivity {
         NestedListView entryList = (NestedListView) findViewById(R.id.entryList);
         ArrayAdapter<BudgetEntry> adapter = new ArrayAdapter(this, R.layout.entry_list_item, arrayEntryStrings);
         entryList.setAdapter(adapter);
-
-        // Handle possibility of no entries
-        if (!selectedEntries.isEmpty()) {
-            entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(CalendarActivity.this, Integer.toString(selectedEntries.get(position).amount), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        else {
-            entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) { }
-            });
-        }
+        registerForContextMenu(entryList);
     }
 
     /** Converts a CalendarDay into an ISO 8601 date (eg, "1970-01-01"). */
     private String calendarDayToString(CalendarDay date) {
         return new SimpleDateFormat("yyyy-MM-dd").format(date.getDate());
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        // Create the menu for long pressing an entry
+        if(v.getId() == R.id.entryList) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+            String title = String.format("$%.2f [%s]\n", selectedEntries.get(info.position).amount / 100.0, selectedEntries.get(info.position).category);
+            menu.setHeaderTitle(title);
+            menu.add(Menu.NONE, 0, 0, getResources().getString(R.string.entry_edit));
+            menu.add(Menu.NONE, 1, 1, getResources().getString(R.string.entry_remove));
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        // Edit
+        if(item.getItemId() == 0) {
+            Log.d("TODO", "Editing " + selectedEntries.get(info.position).amount);
+            return true;
+        }
+        // Delete
+        else if(item.getItemId() == 1) {
+            Log.d("TODO", "Deleting " + selectedEntries.get(info.position).amount);
+            return true;
+        }
+
+        return false;
     }
 }
 

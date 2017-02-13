@@ -11,4 +11,6 @@
     <string name="no_entries">There\'s nothing here...</string>
     <string name="month_stats_button">Month stats</string>
     <string name="day_stats_button">Day stats</string>
+    <string name="entry_edit">Edit</string>
+    <string name="entry_remove">Remove</string>
 </resources>
