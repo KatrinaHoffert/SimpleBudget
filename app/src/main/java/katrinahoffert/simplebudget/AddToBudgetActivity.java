@@ -90,17 +90,26 @@ public class AddToBudgetActivity extends AppCompatActivity {
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
         String amount = amountInput.getText().toString();
 
-        // Detect invalid inputs
-        if(!amount.matches("-?\\d*\\.\\d{0,2}")) {
+        // Detect invalid inputs. Optional negative sign, optional dollar amount, optional period,
+        // and optional decimal amount. At least some number is required. If the decimal amount is
+        // present, so must be the period.
+        if(!amount.matches("(-?\\.\\d{1,2}|-?\\d+(\\.\\d{0,2})?)")) {
             amountInput.startAnimation(errorShakeAnim);
             return;
         }
 
+        // Gotta make sure we handle the cases where the dollar portion might be something like
+        // "-" or "-0" (as is the case for inputs "-.50" and "-0.50").
         String[] amountSplit = amount.split("\\.");
-        int dollarAmount = !amountSplit[0].equals("") ? Integer.parseInt(amountSplit[0]) * 100 : 0;
-        int sign = dollarAmount < 0 ? -1 : 1;
+        int dollarAmount = 0;
+        int sign = amountSplit[0].charAt(0) == '-' ? -1 : 1;
+        if(!amountSplit[0].equals("") && !amountSplit[0].equals("-")) {
+            dollarAmount = Integer.parseInt(amountSplit[0]) * 100;
+        }
+
+        // Correct cents if it was only one digit. Eg, for the input ".5". Have to bear in mind that
+        // there might not be a cents section
         int centsAmount = amountSplit.length > 1 ? Integer.parseInt(amountSplit[1]) : 0;
-        // Correct if cents was only one digit
         if(centsAmount != 0 && amountSplit[1].length() == 1) centsAmount *= 10;
         int amountInCents = sign * (Math.abs(dollarAmount) + centsAmount);
 
