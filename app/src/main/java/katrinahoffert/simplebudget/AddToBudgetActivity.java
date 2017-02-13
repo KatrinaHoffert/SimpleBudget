@@ -21,9 +21,11 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
+import katrinahoffert.simplebudget.model.Category;
 
 public class AddToBudgetActivity extends AppCompatActivity {
     private Animation errorShakeAnim;
+    private List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +36,12 @@ public class AddToBudgetActivity extends AppCompatActivity {
 
         errorShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 
-        List<String> categories =  CategoryDbManager.getCategories(this);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
+        categories =  CategoryDbManager.getCategories(this);
+        String[] categoryNames = new String[categories.size()];
+        for(int i = 0; i < categories.size(); ++i) {
+            categoryNames[i] = categories.get(i).category;
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
         categorySelect.setAdapter(adapter);
@@ -79,7 +85,7 @@ public class AddToBudgetActivity extends AppCompatActivity {
 
     private void addBudgetEntry() {
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
-        String category = categorySelect.getSelectedItem().toString();
+        int categoryId = categories.get(categorySelect.getSelectedItemPosition())._id;
 
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
         String amount = amountInput.getText().toString();
@@ -100,7 +106,7 @@ public class AddToBudgetActivity extends AppCompatActivity {
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-        BudgetEntryDbManager.addEntry(this, amountInCents, category, currentDate);
+        BudgetEntryDbManager.addEntry(this, amountInCents, categoryId, currentDate);
 
         // Inform the user that the entry was added
         amountInput.setText("");

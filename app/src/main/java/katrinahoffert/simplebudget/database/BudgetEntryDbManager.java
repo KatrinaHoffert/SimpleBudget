@@ -17,12 +17,10 @@ public class BudgetEntryDbManager {
     /**
      * Inserts an entry to the database, representing some spending (or income).
      * @param amount The amount in *cents*. Can be negative to represent income.
-     * @param category The category name that this entry is related to.
+     * @param categoryId The ID of the category that this entry is related to.
      * @param date ISO-8601 date (eg, "2017-02-11") for this entry to be tied to.
      */
-    public static void addEntry(Context context, int amount, String category, String date) {
-        int categoryId = CategoryDbManager.getCategoryId(context, category);
-
+    public static void addEntry(Context context, int amount, int categoryId, String date) {
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
