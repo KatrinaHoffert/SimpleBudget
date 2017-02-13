@@ -10,7 +10,8 @@
     android:paddingTop="0dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="katrinahoffert.simplebudget.CalendarActivity"
-    tools:showIn="@layout/activity_calendar">
+    tools:showIn="@layout/activity_calendar"
+    android:focusableInTouchMode="true">
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -62,20 +63,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Entries on &lt;date>"
+                android:text="@string/entries_header"
                 android:id="@+id/dateLabel"
                 android:layout_below="@+id/scrollView"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <katrinahoffert.simplebudget.NestedListView
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="&lt;entries>"
-                android:id="@+id/entryList"
-                android:layout_below="@+id/scrollView"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:id="@+id/entryList" />
 
         </LinearLayout>
     </ScrollView>

@@ -5,7 +5,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -79,7 +83,7 @@ public class CalendarActivity extends AppCompatActivity {
         // We want to get a two month padding for the date range of entries to retrieve
         CalendarDay minMonth = month < 2 ? CalendarDay.from(year - 1, (month - 2) % 12, 1) : CalendarDay.from(year, month - 2, 1);
         CalendarDay maxMonth = month > 9 ? CalendarDay.from(year + 1, (month + 2) % 12, 1) : CalendarDay.from(year, month + 2, 1);
-        final List<BudgetEntry> entries = BudgetEntryDbManager.getEntriesInRange(getApplicationContext(), calendarDayToString(minMonth), calendarDayToString(maxMonth));
+        final List<BudgetEntry> entries = BudgetEntryDbManager.getEntriesInRange(this, calendarDayToString(minMonth), calendarDayToString(maxMonth));
 
         // Throw these into a hash set so that decorating is fast
         final HashSet<CalendarDay> daysToDecorate = new HashSet<>();
@@ -99,7 +103,7 @@ public class CalendarActivity extends AppCompatActivity {
 
             @Override
             public void decorate(DayViewFacade view) {
-                int color = ContextCompat.getColor(getApplicationContext(), R.color.colorCalendarMarker);
+                int color = ContextCompat.getColor(CalendarActivity.this, R.color.colorCalendarMarker);
                 view.addSpan(new DotSpan(10, color));
             }
         });
@@ -111,20 +115,39 @@ public class CalendarActivity extends AppCompatActivity {
      */
     private void updateSelection(CalendarDay date) {
         String iso8601Date = calendarDayToString(date);
-        List<BudgetEntry> selectedEntries = BudgetEntryDbManager.getEntriesInRange(getApplicationContext(), iso8601Date, iso8601Date);
+        final List<BudgetEntry> selectedEntries = BudgetEntryDbManager.getEntriesInRange(this, iso8601Date, iso8601Date);
 
         TextView dateLabel = (TextView) findViewById(R.id.dateLabel);
         dateLabel.setText(String.format(getResources().getString(R.string.entries_header), iso8601Date));
 
-        TextView entryList = (TextView) findViewById(R.id.entryList);
-        entryList.setText("");
-        for (BudgetEntry entry : selectedEntries) {
-            entryList.append(String.format("$%.2f [%s]\n", entry.amount / 100.0, entry.category));
+        String[] arrayEntryStrings = new String[selectedEntries.size()];
+        for (int i = 0; i < arrayEntryStrings.length; ++i) {
+            arrayEntryStrings[i] = String.format("$%.2f [%s]\n", selectedEntries.get(i).amount / 100.0, selectedEntries.get(i).category);
         }
 
         // Handle possibility of no entries
         if (selectedEntries.isEmpty()) {
-            entryList.setText(getResources().getString(R.string.no_entries));
+            arrayEntryStrings = new String[] { getResources().getString(R.string.no_entries) };
+        }
+
+        NestedListView entryList = (NestedListView) findViewById(R.id.entryList);
+        ArrayAdapter<BudgetEntry> adapter = new ArrayAdapter(this, R.layout.entry_list_item, arrayEntryStrings);
+        entryList.setAdapter(adapter);
+
+        // Handle possibility of no entries
+        if (!selectedEntries.isEmpty()) {
+            entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(CalendarActivity.this, Integer.toString(selectedEntries.get(position).amount), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) { }
+            });
         }
     }
 

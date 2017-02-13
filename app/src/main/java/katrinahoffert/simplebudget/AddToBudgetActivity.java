@@ -32,9 +32,9 @@ public class AddToBudgetActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        errorShakeAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+        errorShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 
-        List<String> categories =  CategoryDbManager.getCategories(getApplicationContext());
+        List<String> categories =  CategoryDbManager.getCategories(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
@@ -100,11 +100,11 @@ public class AddToBudgetActivity extends AppCompatActivity {
 
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-        BudgetEntryDbManager.addEntry(getApplicationContext(), amountInCents, category, currentDate);
+        BudgetEntryDbManager.addEntry(this, amountInCents, category, currentDate);
 
         // Inform the user that the entry was added
         amountInput.setText("");
-        Toast.makeText(getApplicationContext(), getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
     }
 
     private void showCalendar() {
