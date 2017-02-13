@@ -42,9 +42,9 @@ public class BudgetEntryDbManager {
     public static List<BudgetEntry> getEntriesInRange(Context context, String startDate, String endDate) {
         String query = "SELECT b." + BudgetEntryTable._ID + ", b." + BudgetEntryTable.COLUMN_NAME_AMOUNT +
                 ", b." + BudgetEntryTable.COLUMN_NAME_DATE + ", c." + CategoryTable.COLUMN_NAME_CATEGORY_NAME +
-                " FROM " + BudgetEntryTable.TABLE_NAME + " b INNER JOIN " + CategoryTable.TABLE_NAME +
-                " c ON b." + BudgetEntryTable.COLUMN_NAME_CATEGORY_ID + " = c." + CategoryTable._ID +
-                " WHERE " + BudgetEntryTable.COLUMN_NAME_DATE + " BETWEEN ? AND ?";
+                ", b." + BudgetEntryTable.COLUMN_NAME_CATEGORY_ID + " FROM " + BudgetEntryTable.TABLE_NAME +
+                " b INNER JOIN " + CategoryTable.TABLE_NAME + " c ON b." + BudgetEntryTable.COLUMN_NAME_CATEGORY_ID
+                + " = c." + CategoryTable._ID + " WHERE " + BudgetEntryTable.COLUMN_NAME_DATE + " BETWEEN ? AND ?";
 
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getReadableDatabase();
@@ -55,6 +55,7 @@ public class BudgetEntryDbManager {
             BudgetEntry entry = new BudgetEntry();
             entry._id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable._ID));
             entry.category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME));
+            entry.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID));
             entry.date = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable.COLUMN_NAME_DATE));
             entry.amount = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable.COLUMN_NAME_AMOUNT));
             entries.add(entry);
