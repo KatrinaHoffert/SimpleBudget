@@ -65,4 +65,12 @@ public class BudgetEntryDbManager {
 
         return entries;
     }
+
+    public static void deleteEntry(Context context, int entryId) {
+        DbManager dbManager = new DbManager(context);
+        SQLiteDatabase db = dbManager.getWritableDatabase();
+        db.delete(BudgetEntryTable.TABLE_NAME,
+                BudgetEntryTable._ID + " = ?",
+                new String[] { Integer.toString(entryId) });
+    }
 }

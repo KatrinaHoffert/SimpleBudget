@@ -168,7 +168,9 @@ public class CalendarActivity extends AppCompatActivity {
         }
         // Delete
         else if(item.getItemId() == 1) {
-            Log.d("TODO", "Deleting " + selectedEntries.get(info.position)._id);
+            BudgetEntryDbManager.deleteEntry(CalendarActivity.this, selectedEntries.get(info.position)._id);
+            MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
+            updateSelection(calendar.getSelectedDate());
             return true;
         }
 
