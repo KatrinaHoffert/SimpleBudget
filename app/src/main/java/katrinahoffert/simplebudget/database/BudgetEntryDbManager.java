@@ -16,6 +16,7 @@ import static katrinahoffert.simplebudget.database.DbContract.CategoryTable;
 public class BudgetEntryDbManager {
     /**
      * Inserts an entry to the database, representing some spending (or income).
+     * @param context The application context.
      * @param amount The amount in *cents*. Can be negative to represent income.
      * @param categoryId The ID of the category that this entry is related to.
      * @param date ISO-8601 date (eg, "2017-02-11") for this entry to be tied to.
@@ -25,10 +26,36 @@ public class BudgetEntryDbManager {
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(DbContract.BudgetEntryTable.COLUMN_NAME_AMOUNT, amount);
-        values.put(DbContract.BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, categoryId);
-        values.put(DbContract.BudgetEntryTable.COLUMN_NAME_DATE, date);
-        db.insert(DbContract.BudgetEntryTable.TABLE_NAME, null, values);
+        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, amount);
+        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, categoryId);
+        values.put(BudgetEntryTable.COLUMN_NAME_DATE, date);
+        db.insert(BudgetEntryTable.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    /**
+     * Updates an entry in the database.
+     * @param context The application context.
+     * @param id The ID of the entry to update.
+     * @param amount The amount in *cents*. Can be negative to represent income.
+     * @param categoryId The ID of the category that this entry is related to.
+     * @param date ISO-8601 date (eg, "2017-02-11") for this entry to be tied to.
+     */
+    public static void updateEntry(Context context, int id, int amount, int categoryId, String date) {
+        DbManager dbManager = new DbManager(context);
+        SQLiteDatabase db = dbManager.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, amount);
+        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, categoryId);
+        values.put(BudgetEntryTable.COLUMN_NAME_DATE, date);
+
+        db.update(
+                BudgetEntryTable.TABLE_NAME,
+                values,
+                BudgetEntryTable._ID + " = ?",
+                new String[]{Integer.toString(id) }
+        );
         db.close();
     }
 

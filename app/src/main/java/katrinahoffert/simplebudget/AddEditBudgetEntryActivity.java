@@ -15,11 +15,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
 import katrinahoffert.simplebudget.model.Category;
@@ -92,9 +94,12 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
         if(mode == AddEditActivityMode.EDIT) dateString = getIntent().getStringExtra("date");
         BudgetEntry entry = MainActivity.parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateString);
         if(entry == null) return;
-
         entry._id = id;
-        Log.d("TODO", entry.toString());
+
+        BudgetEntryDbManager.updateEntry(this, entry._id, entry.amount, entry.category_id, entry.date);
+
+        // Inform the user that the entry was added
+        Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();
     }
 
     @Override

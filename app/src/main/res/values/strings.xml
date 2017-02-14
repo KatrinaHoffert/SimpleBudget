@@ -14,4 +14,5 @@
     <string name="entry_edit">Edit</string>
     <string name="entry_remove">Remove</string>
     <string name="title_activity_add_edit_budget_entry">SimpleBudget</string>
+    <string name="editEntrySuccess">Entry has been updated</string>
 </resources>
