@@ -23,14 +23,14 @@ import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.Category;
 
-public class AddToBudgetActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     private Animation errorShakeAnim;
     private List<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_to_budget);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -64,7 +64,7 @@ public class AddToBudgetActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_to_budget, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -123,6 +123,6 @@ public class AddToBudgetActivity extends AppCompatActivity {
     }
 
     private void showCalendar() {
-        AddToBudgetActivity.this.startActivity(new Intent(AddToBudgetActivity.this, CalendarActivity.class));
+        MainActivity.this.startActivity(new Intent(MainActivity.this, CalendarActivity.class));
     }
 }
