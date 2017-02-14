@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         initCategories();
 
+        EditText dateInput = (EditText) findViewById(R.id.dateInput);
+        dateInput.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+
         Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -92,9 +95,9 @@ public class MainActivity extends AppCompatActivity {
     private void addBudgetEntry() {
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
-        String todayDateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        EditText dateInput = (EditText) findViewById(R.id.dateInput);
 
-        BudgetEntry entry = parseInput(errorShakeAnim, categories, categorySelect, amountInput, todayDateString);
+        BudgetEntry entry = parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateInput);
         if(entry == null) return;
         BudgetEntryDbManager.addEntry(this, entry);
 
@@ -112,10 +115,10 @@ public class MainActivity extends AppCompatActivity {
      *                   indices should match that of the select.
      * @param categorySelect The select that the user uses to select categories.
      * @param amountInput The input used for the amount.
-     * @param date A string for the date (since currently date selection is not implemented).
+     * @param dateInput The input used for the date.
      * @return A BudgetEntry object that is valid in all but its "_id" field.
      */
-    public static BudgetEntry parseInput(Animation errorAnimation, List<Category> categories, Spinner categorySelect, EditText amountInput, String date) {
+    public static BudgetEntry parseInput(Animation errorAnimation, List<Category> categories, Spinner categorySelect, EditText amountInput, EditText dateInput) {
         int categoryId = categories.get(categorySelect.getSelectedItemPosition())._id;
         String amount = amountInput.getText().toString();
 
@@ -142,11 +145,13 @@ public class MainActivity extends AppCompatActivity {
         if(centsAmount != 0 && amountSplit[1].length() == 1) centsAmount *= 10;
         int amountInCents = sign * (Math.abs(dollarAmount) + centsAmount);
 
+        // TODO: Validate date
+
         BudgetEntry entry = new BudgetEntry();
         entry.amount = amountInCents;
         entry.category = categorySelect.getSelectedItem().toString();
         entry.categoryId = categoryId;
-        entry.date = date;
+        entry.date = dateInput.getText().toString();
         return entry;
     }
 

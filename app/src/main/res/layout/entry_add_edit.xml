@@ -3,6 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:id="@+id/dateInput"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/amountInput"
+        android:layout_alignEnd="@+id/amountInput"
+        android:layout_alignLeft="@+id/amountInput"
+        android:layout_alignStart="@+id/amountInput"
+        android:gravity="center_horizontal" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -10,19 +23,18 @@
         android:id="@+id/categoryLabel"
         android:textSize="16dp"
         android:textAlignment="center"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/dateInput"
+        android:layout_centerHorizontal="true" />
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/categorySelect"
         android:layout_below="@+id/categoryLabel"
-        android:layout_alignLeft="@+id/amountInput"
-        android:layout_alignStart="@+id/amountInput"
-        android:layout_alignRight="@+id/amountInput"
-        android:layout_alignEnd="@+id/amountInput" />
+        android:layout_alignLeft="@+id/dateInput"
+        android:layout_alignStart="@+id/dateInput"
+        android:layout_alignRight="@+id/dateInput"
+        android:layout_alignEnd="@+id/dateInput" />
 
     <TextView
         android:layout_width="match_parent"
@@ -31,9 +43,9 @@
         android:id="@+id/amountLabel"
         android:textSize="16dp"
         android:textAlignment="center"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/categorySelect"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:layout_width="wrap_content"

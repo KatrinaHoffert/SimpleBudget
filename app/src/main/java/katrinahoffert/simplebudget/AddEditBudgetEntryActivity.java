@@ -83,6 +83,11 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
                 addEditBudgetEntry();
             }
         });
+
+        String date = getIntent().getStringExtra("date");
+        if(date == null) date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        EditText dateInput = (EditText) findViewById(R.id.dateInput);
+        dateInput.setText(date);
     }
 
     /** Submits the input as either a new budget entry or updating the existing one, depending on mode. */
@@ -90,10 +95,9 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
         // Build up the budget entry to add/edit
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
-        String dateString = dateString = getIntent().getStringExtra("date");
-        if(dateString == null) dateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        EditText dateInput = (EditText) findViewById(R.id.dateInput);
 
-        BudgetEntry entry = MainActivity.parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateString);
+        BudgetEntry entry = MainActivity.parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateInput);
         if(entry == null) return;
 
         if(mode == AddEditActivityMode.ADD) {
