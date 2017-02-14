@@ -90,17 +90,21 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
         // Build up the budget entry to add/edit
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
-        String dateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        if(mode == AddEditActivityMode.EDIT) dateString = getIntent().getStringExtra("date");
+        String dateString = dateString = getIntent().getStringExtra("date");
+        if(dateString == null) dateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
         BudgetEntry entry = MainActivity.parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateString);
         if(entry == null) return;
-        entry._id = id;
 
-        BudgetEntryDbManager.updateEntry(this, entry);
-
-        // Inform the user that the entry was added
-        Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();
+        if(mode == AddEditActivityMode.ADD) {
+            BudgetEntryDbManager.addEntry(this, entry);
+            Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            entry._id = id;
+            BudgetEntryDbManager.updateEntry(this, entry);
+            Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

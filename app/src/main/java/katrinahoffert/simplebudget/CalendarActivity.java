@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -41,6 +42,18 @@ public class CalendarActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initializeCalendar();
+
+        Button addButton = (Button) findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
+                Intent intent = new Intent(CalendarActivity.this, AddEditBudgetEntryActivity.class);
+                intent.putExtra("mode", AddEditBudgetEntryActivity.AddEditActivityMode.ADD);
+                intent.putExtra("date", calendarDayToString(calendar.getSelectedDate()));
+                CalendarActivity.this.startActivity(intent);
+            }
+        });
     }
 
     @Override
