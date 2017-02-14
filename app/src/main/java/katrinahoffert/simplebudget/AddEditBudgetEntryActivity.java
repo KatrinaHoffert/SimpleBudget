@@ -92,11 +92,12 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
         String dateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         if(mode == AddEditActivityMode.EDIT) dateString = getIntent().getStringExtra("date");
+
         BudgetEntry entry = MainActivity.parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateString);
         if(entry == null) return;
         entry._id = id;
 
-        BudgetEntryDbManager.updateEntry(this, entry._id, entry.amount, entry.category_id, entry.date);
+        BudgetEntryDbManager.updateEntry(this, entry);
 
         // Inform the user that the entry was added
         Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();

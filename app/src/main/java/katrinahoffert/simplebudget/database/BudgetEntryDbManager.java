@@ -17,18 +17,16 @@ public class BudgetEntryDbManager {
     /**
      * Inserts an entry to the database, representing some spending (or income).
      * @param context The application context.
-     * @param amount The amount in *cents*. Can be negative to represent income.
-     * @param categoryId The ID of the category that this entry is related to.
-     * @param date ISO-8601 date (eg, "2017-02-11") for this entry to be tied to.
+     * @param entry The entry to insert. The ID will be ignored.
      */
-    public static void addEntry(Context context, int amount, int categoryId, String date) {
+    public static void addEntry(Context context, BudgetEntry entry) {
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, amount);
-        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, categoryId);
-        values.put(BudgetEntryTable.COLUMN_NAME_DATE, date);
+        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, entry.amount);
+        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, entry.categoryId);
+        values.put(BudgetEntryTable.COLUMN_NAME_DATE, entry.date);
         db.insert(BudgetEntryTable.TABLE_NAME, null, values);
         db.close();
     }
@@ -36,25 +34,22 @@ public class BudgetEntryDbManager {
     /**
      * Updates an entry in the database.
      * @param context The application context.
-     * @param id The ID of the entry to update.
-     * @param amount The amount in *cents*. Can be negative to represent income.
-     * @param categoryId The ID of the category that this entry is related to.
-     * @param date ISO-8601 date (eg, "2017-02-11") for this entry to be tied to.
+     * @param entry The entry we're updating.
      */
-    public static void updateEntry(Context context, int id, int amount, int categoryId, String date) {
+    public static void updateEntry(Context context, BudgetEntry entry) {
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, amount);
-        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, categoryId);
-        values.put(BudgetEntryTable.COLUMN_NAME_DATE, date);
+        values.put(BudgetEntryTable.COLUMN_NAME_AMOUNT, entry.amount);
+        values.put(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, entry.categoryId);
+        values.put(BudgetEntryTable.COLUMN_NAME_DATE, entry.date);
 
         db.update(
                 BudgetEntryTable.TABLE_NAME,
                 values,
                 BudgetEntryTable._ID + " = ?",
-                new String[]{Integer.toString(id) }
+                new String[] { Integer.toString(entry._id) }
         );
         db.close();
     }
@@ -82,7 +77,7 @@ public class BudgetEntryDbManager {
             BudgetEntry entry = new BudgetEntry();
             entry._id = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable._ID));
             entry.category = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CategoryTable.COLUMN_NAME_CATEGORY_NAME));
-            entry.category_id = cursor.getInt(cursor.getColumnIndexOrThrow(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID));
+            entry.categoryId = cursor.getInt(cursor.getColumnIndexOrThrow(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID));
             entry.date = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable.COLUMN_NAME_DATE));
             entry.amount = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.BudgetEntryTable.COLUMN_NAME_AMOUNT));
             entries.add(entry);
@@ -93,6 +88,11 @@ public class BudgetEntryDbManager {
         return entries;
     }
 
+    /**
+     * Deletes an entry.
+     * @param context The application context.
+     * @param entryId The ID of the entry to delete.
+     */
     public static void deleteEntry(Context context, int entryId) {
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getWritableDatabase();

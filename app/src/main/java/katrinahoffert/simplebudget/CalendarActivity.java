@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -167,7 +165,7 @@ public class CalendarActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddEditBudgetEntryActivity.class);
             intent.putExtra("mode", AddEditBudgetEntryActivity.AddEditActivityMode.EDIT);
             intent.putExtra("id", selectedEntries.get(info.position)._id);
-            intent.putExtra("categoryId", selectedEntries.get(info.position).category_id);
+            intent.putExtra("categoryId", selectedEntries.get(info.position).categoryId);
             intent.putExtra("amount", selectedEntries.get(info.position).amount);
             intent.putExtra("date", selectedEntries.get(info.position).date);
             this.startActivity(intent);

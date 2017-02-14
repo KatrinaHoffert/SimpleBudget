@@ -93,9 +93,10 @@ public class MainActivity extends AppCompatActivity {
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
         String todayDateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
         BudgetEntry entry = parseInput(errorShakeAnim, categories, categorySelect, amountInput, todayDateString);
         if(entry == null) return;
-        BudgetEntryDbManager.addEntry(this, entry.amount, entry.category_id, entry.date);
+        BudgetEntryDbManager.addEntry(this, entry);
 
         // Inform the user that the entry was added
         amountInput.setText("");
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         BudgetEntry entry = new BudgetEntry();
         entry.amount = amountInCents;
         entry.category = categorySelect.getSelectedItem().toString();
-        entry.category_id = categoryId;
+        entry.categoryId = categoryId;
         entry.date = date;
         return entry;
     }
