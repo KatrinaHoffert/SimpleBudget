@@ -43,6 +43,12 @@ public class CalendarActivity extends AppCompatActivity {
         initializeCalendar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateCalendarAndEntryList();
+    }
+
     /**
      * Initializes the calendar, attaching appropriate event handling and decorators for showing
      * what days have entries.
@@ -174,12 +180,19 @@ public class CalendarActivity extends AppCompatActivity {
         // Delete
         else if(item.getItemId() == 1) {
             BudgetEntryDbManager.deleteEntry(CalendarActivity.this, selectedEntries.get(info.position)._id);
-            MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
-            updateSelection(calendar.getSelectedDate());
+            updateCalendarAndEntryList();
             return true;
         }
 
         return false;
+    }
+
+    /** Updates the calendar decorations and the entry list. Useful if the entries have been modified. */
+    private void updateCalendarAndEntryList() {
+        MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
+        updateSelection(calendar.getSelectedDate());
+        CalendarDay today = new CalendarDay(new Date());
+        updateDecoration(calendar, today.getYear(), today.getMonth());
     }
 }
 
