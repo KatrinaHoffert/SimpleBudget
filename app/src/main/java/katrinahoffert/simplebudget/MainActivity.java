@@ -21,6 +21,7 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
+import katrinahoffert.simplebudget.model.BudgetEntry;
 import katrinahoffert.simplebudget.model.Category;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,15 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         errorShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 
-        categories =  CategoryDbManager.getCategories(this);
-        String[] categoryNames = new String[categories.size()];
-        for(int i = 0; i < categories.size(); ++i) {
-            categoryNames[i] = categories.get(i).category;
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
-        categorySelect.setAdapter(adapter);
+        initCategories();
 
         Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -83,19 +76,54 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void initCategories() {
+        categories =  CategoryDbManager.getCategories(this);
+        String[] categoryNames = new String[categories.size()];
+        for(int i = 0; i < categories.size(); ++i) {
+            categoryNames[i] = categories.get(i).category;
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
+        categorySelect.setAdapter(adapter);
+    }
+
+    /** Adds a new budget entry from the input */
     private void addBudgetEntry() {
         Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
-        int categoryId = categories.get(categorySelect.getSelectedItemPosition())._id;
-
         EditText amountInput = (EditText) findViewById(R.id.amountInput);
+        String todayDateString = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        BudgetEntry entry = parseInput(errorShakeAnim, categories, categorySelect, amountInput, todayDateString);
+        if(entry == null) return;
+        BudgetEntryDbManager.addEntry(this, entry.amount, entry.category_id, entry.date);
+
+        // Inform the user that the entry was added
+        amountInput.setText("");
+        Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Parses input into a BudgetEntry object. This somewhat awkward method is used so that code can
+     * be shared with AddEditBudgetEntryActivity, which needs to parse the same info in a consistent
+     * way.
+     * @param errorAnimation The animation to apply to the amountInput if it's invalid.
+     * @param categories The list of all categories that was used to populat the category select. Its
+     *                   indices should match that of the select.
+     * @param categorySelect The select that the user uses to select categories.
+     * @param amountInput The input used for the amount.
+     * @param date A string for the date (since currently date selection is not implemented).
+     * @return A BudgetEntry object that is valid in all but its "_id" field.
+     */
+    public static BudgetEntry parseInput(Animation errorAnimation, List<Category> categories, Spinner categorySelect, EditText amountInput, String date) {
+        int categoryId = categories.get(categorySelect.getSelectedItemPosition())._id;
         String amount = amountInput.getText().toString();
 
         // Detect invalid inputs. Optional negative sign, optional dollar amount, optional period,
         // and optional decimal amount. At least some number is required. If the decimal amount is
         // present, so must be the period.
         if(!amount.matches("(-?\\.\\d{1,2}|-?\\d+(\\.\\d{0,2})?)")) {
-            amountInput.startAnimation(errorShakeAnim);
-            return;
+            amountInput.startAnimation(errorAnimation);
+            return null;
         }
 
         // Gotta make sure we handle the cases where the dollar portion might be something like
@@ -113,13 +141,12 @@ public class MainActivity extends AppCompatActivity {
         if(centsAmount != 0 && amountSplit[1].length() == 1) centsAmount *= 10;
         int amountInCents = sign * (Math.abs(dollarAmount) + centsAmount);
 
-        String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-        BudgetEntryDbManager.addEntry(this, amountInCents, categoryId, currentDate);
-
-        // Inform the user that the entry was added
-        amountInput.setText("");
-        Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+        BudgetEntry entry = new BudgetEntry();
+        entry.amount = amountInCents;
+        entry.category = categorySelect.getSelectedItem().toString();
+        entry.category_id = categoryId;
+        entry.date = date;
+        return entry;
     }
 
     private void showCalendar() {
