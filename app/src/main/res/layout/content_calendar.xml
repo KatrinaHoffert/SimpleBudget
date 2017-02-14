@@ -48,6 +48,12 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:text="@string/add_entry_button"
+                    android:id="@+id/addButton" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:text="@string/month_stats_button"
                     android:id="@+id/monthStatsButton" />
 
