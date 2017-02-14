@@ -1,5 +1,6 @@
 package katrinahoffert.simplebudget;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -163,7 +164,9 @@ public class CalendarActivity extends AppCompatActivity {
 
         // Edit
         if(item.getItemId() == 0) {
-            Log.d("TODO", "Editing " + selectedEntries.get(info.position)._id);
+            Intent intent = new Intent(this, AddEditBudgetEntryActivity.class);
+            intent.putExtra("id", selectedEntries.get(info.position)._id);
+            this.startActivity(intent);
             return true;
         }
         // Delete
