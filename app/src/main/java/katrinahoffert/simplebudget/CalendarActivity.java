@@ -165,7 +165,11 @@ public class CalendarActivity extends AppCompatActivity {
         // Edit
         if(item.getItemId() == 0) {
             Intent intent = new Intent(this, AddEditBudgetEntryActivity.class);
+            intent.putExtra("mode", AddEditBudgetEntryActivity.AddEditActivityMode.EDIT);
             intent.putExtra("id", selectedEntries.get(info.position)._id);
+            intent.putExtra("categoryId", selectedEntries.get(info.position).category_id);
+            intent.putExtra("amount", selectedEntries.get(info.position).amount);
+            intent.putExtra("date", selectedEntries.get(info.position).date);
             this.startActivity(intent);
             return true;
         }
