@@ -1,72 +1,41 @@
 package katrinahoffert.simplebudget;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
-import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
-import katrinahoffert.simplebudget.model.Category;
 
-public class AddEditBudgetEntryActivity extends AppCompatActivity {
-    private Animation errorShakeAnim;
-    private List<Category> categories;
-
+public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
     private AddEditActivityMode mode;
     private int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_budget_entry);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        super.onCreate(savedInstanceState);
 
         mode = (AddEditActivityMode) getIntent().getSerializableExtra("mode");
         id = getIntent().getIntExtra("id", -1);
 
-        errorShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
-
-        // Load the categories and if we're in edit mode, identify the index of the category
-        // that should be selected.
-        categories =  CategoryDbManager.getCategories(this);
-        String[] categoryNames = new String[categories.size()];
-        int defaultSelected = 0;
-        for(int i = 0; i < categories.size(); ++i) {
-            categoryNames[i] = categories.get(i).category;
-
+        // Initialize fields with previous values (note that date is initialized in BudgetEntryBaseActivity)
+        if(mode == AddEditActivityMode.EDIT) {
             // Get the appropriate category of the event we're editing
-            if(mode == AddEditActivityMode.EDIT) {
-                if(categories.get(i)._id == getIntent().getIntExtra("categoryId", -1)) {
-                    defaultSelected = i;
+            int defaultSelected = 0;
+            int categoryId = getIntent().getIntExtra("categoryId", -1);
+            for(int i = 0; i < categories.size(); ++i) {
+                if(mode == AddEditActivityMode.EDIT) {
+                    if(categories.get(i)._id == categoryId) {
+                        defaultSelected = i;
+                    }
                 }
             }
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
-        categorySelect.setAdapter(adapter);
 
-        if(mode == AddEditActivityMode.EDIT) {
+            Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
             categorySelect.setSelection(defaultSelected);
 
             // Initialize the amount input
@@ -74,40 +43,6 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
             String amountString = String.format("%d.%02d", amount / 100, Math.abs(amount % 100));
             EditText amountInput = (EditText) findViewById(R.id.amountInput);
             amountInput.setText(amountString);
-        }
-
-        Button submitButton = (Button) findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addEditBudgetEntry();
-            }
-        });
-
-        String date = getIntent().getStringExtra("date");
-        if(date == null) date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        EditText dateInput = (EditText) findViewById(R.id.dateInput);
-        dateInput.setText(date);
-    }
-
-    /** Submits the input as either a new budget entry or updating the existing one, depending on mode. */
-    private void addEditBudgetEntry() {
-        // Build up the budget entry to add/edit
-        Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
-        EditText amountInput = (EditText) findViewById(R.id.amountInput);
-        EditText dateInput = (EditText) findViewById(R.id.dateInput);
-
-        BudgetEntry entry = MainActivity.parseInput(errorShakeAnim, categories, categorySelect, amountInput, dateInput);
-        if(entry == null) return;
-
-        if(mode == AddEditActivityMode.ADD) {
-            BudgetEntryDbManager.addEntry(this, entry);
-            Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
-        }
-        else {
-            entry._id = id;
-            BudgetEntryDbManager.updateEntry(this, entry);
-            Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -120,6 +55,23 @@ public class AddEditBudgetEntryActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /** Submits the input as either a new budget entry or updating the existing one, depending on mode. */
+    @Override
+    protected void submitButtonPressed() {
+        BudgetEntry entry = parseInput();
+        if(entry == null) return;
+
+        if(mode == AddEditActivityMode.ADD) {
+            BudgetEntryDbManager.addEntry(this, entry);
+            Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            entry._id = id;
+            BudgetEntryDbManager.updateEntry(this, entry);
+            Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /** The mode that this activity is in. We can either add a new budget entry or edit an existing one. */
