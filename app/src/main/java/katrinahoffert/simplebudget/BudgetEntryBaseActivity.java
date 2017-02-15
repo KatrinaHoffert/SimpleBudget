@@ -62,7 +62,6 @@ public abstract class BudgetEntryBaseActivity extends AppCompatActivity {
         if(date == null) date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         dateInput = (EditText) findViewById(R.id.dateInput);
         dateInput.setText(date);
-        Log.d("TODO", date);
 
         amountInput = (EditText) findViewById(R.id.amountInput);
     }
