@@ -14,7 +14,9 @@
         android:layout_alignEnd="@+id/amountInput"
         android:layout_alignLeft="@+id/amountInput"
         android:layout_alignStart="@+id/amountInput"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:focusable="false"
+        android:longClickable="false" />
 
     <TextView
         android:layout_width="match_parent"
