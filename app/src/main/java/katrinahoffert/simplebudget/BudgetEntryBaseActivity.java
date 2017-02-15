@@ -37,7 +37,6 @@ public abstract class BudgetEntryBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         errorShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 

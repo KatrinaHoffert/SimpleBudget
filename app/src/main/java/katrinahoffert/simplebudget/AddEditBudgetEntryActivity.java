@@ -18,6 +18,7 @@ public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_add_edit_budget_entry);
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mode = (AddEditActivityMode) getIntent().getSerializableExtra("mode");
         id = getIntent().getIntExtra("id", -1);
