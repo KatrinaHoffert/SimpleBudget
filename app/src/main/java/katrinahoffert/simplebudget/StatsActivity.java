@@ -1,5 +1,6 @@
 package katrinahoffert.simplebudget;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,6 +34,7 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
+import katrinahoffert.simplebudget.util.DateUtil;
 
 public class StatsActivity extends AppCompatActivity {
     private List<BudgetEntry> entryList;
@@ -62,8 +65,10 @@ public class StatsActivity extends AppCompatActivity {
 
         TextView startDateInput = (TextView) findViewById(R.id.startDateInput);
         startDateInput.setText(startDate);
+        initializeDatePicker(startDateInput, null, endDate);
         TextView endDateInput = (TextView) findViewById(R.id.endDateInput);
         endDateInput.setText(endDate);
+        initializeDatePicker(endDateInput, startDate, null);
 
         entryList = BudgetEntryDbManager.getEntriesInRange(this, startDate, endDate);
         categorySumList = computeCategorySums();
@@ -93,9 +98,63 @@ public class StatsActivity extends AppCompatActivity {
         return categorySumList;
     }
 
+    /**
+     * Initializes a date picker.
+     * @param dateInput The input that we're applying this to.
+     * @param minDate An optional date minimum constraint for the date picker. If null, no constraint is applied.
+     * @param maxDate An optional date maximum constraint for the date picker. If null, no constraint is applied.
+     */
+    private void initializeDatePicker(final TextView dateInput, final String minDate, final String maxDate) {
+        final Calendar calendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int day) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                dateInput.setText(new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime()));
+
+                // Reapply event handlers
+                TextView startDateInput = (TextView) findViewById(R.id.startDateInput);
+                TextView endDateInput = (TextView) findViewById(R.id.endDateInput);
+                String startDate = startDateInput.getText().toString();
+                String endDate = endDateInput.getText().toString();
+                initializeDatePicker(startDateInput, null, endDate);
+                initializeDatePicker(endDateInput, startDate, null);
+
+                // Recreate everything that depends on the date ranges
+                entryList = BudgetEntryDbManager.getEntriesInRange(StatsActivity.this, startDate, endDate);
+                categorySumList = computeCategorySums();
+
+                populateCategorySummaryTable();
+                initializePieChart();
+            }
+        };
+
+        dateInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Initialize date picker to the currently selected date and show it
+                String selectedDate = dateInput.getText().toString();
+                String[] splitDate = selectedDate.split("-");
+                DatePickerDialog dialog = new DatePickerDialog(StatsActivity.this, date, Integer.parseInt(splitDate[0]),
+                        Integer.parseInt(splitDate[1]) - 1, Integer.parseInt(splitDate[2]));
+
+                if (minDate != null) dialog.getDatePicker().setMinDate(DateUtil.iso8601StringToDate(minDate).getTime());
+
+                // Max date is exclusive, so add a day to it
+                long millisecondsInADay = 1000 * 60 * 60 * 24;
+                if (maxDate != null) dialog.getDatePicker().setMaxDate(DateUtil.iso8601StringToDate(maxDate).getTime() + millisecondsInADay);
+
+                dialog.show();
+            }
+        });
+    }
+
     /** Populates the category summary table with values from the category sums. */
     private void populateCategorySummaryTable() {
         TableLayout table = (TableLayout) findViewById(R.id.categoryTable);
+        table.removeAllViews();
 
         if(categorySumList.isEmpty()) {
             TableRow row = new TableRow(this);

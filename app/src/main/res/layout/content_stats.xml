@@ -34,7 +34,9 @@
                     android:inputType="date"
                     android:id="@+id/startDateInput"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:focusable="false"
+                    android:longClickable="false" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -42,7 +44,9 @@
                     android:inputType="date"
                     android:id="@+id/endDateInput"
                     android:layout_weight="1"
-                    android:gravity="center_horizontal" />
+                    android:gravity="center_horizontal"
+                    android:longClickable="false"
+                    android:focusable="false" />
 
             </LinearLayout>
 
