@@ -4,33 +4,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="katrinahoffert.simplebudget.StatsActivity"
     tools:showIn="@layout/activity_stats">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="date"
-            android:id="@+id/startDateInput"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/statsScrollView"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
 
-        <EditText
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="date"
-            android:id="@+id/endDateInput"
-            android:layout_weight="1"
-            android:gravity="center_horizontal" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:id="@+id/startDateInput"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="date"
+                    android:id="@+id/endDateInput"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal" />
+
+            </LinearLayout>
+
+            <TableLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/categoryTable"
+                android:stretchColumns="0,1"></TableLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

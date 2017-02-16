@@ -17,4 +17,6 @@
     <string name="editEntrySuccess">Entry has been updated</string>
     <string name="add_entry_button">Add</string>
     <string name="title_activity_stats">StatsActivity</string>
+    <string name="statsHeaderSpendings">Spendings</string>
+    <string name="statsHeaderCategory">Category</string>
 </resources>
