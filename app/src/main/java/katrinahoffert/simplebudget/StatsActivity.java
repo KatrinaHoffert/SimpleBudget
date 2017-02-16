@@ -4,8 +4,6 @@ import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,7 +17,6 @@ import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,7 +68,7 @@ public class StatsActivity extends AppCompatActivity {
         entryList = BudgetEntryDbManager.getEntriesInRange(this, startDate, endDate);
         categorySumList = computeCategorySums();
 
-        populateCategorySummaryTable();
+        initializeCategorySummaryTable();
         initializePieChart();
     }
 
@@ -99,7 +94,8 @@ public class StatsActivity extends AppCompatActivity {
     }
 
     /**
-     * Initializes a date picker.
+     * Initializes a date picker. The date pickers have constraints and once a date is picked,
+     * they'll recreate all the stats.
      * @param dateInput The input that we're applying this to.
      * @param minDate An optional date minimum constraint for the date picker. If null, no constraint is applied.
      * @param maxDate An optional date maximum constraint for the date picker. If null, no constraint is applied.
@@ -126,7 +122,7 @@ public class StatsActivity extends AppCompatActivity {
                 entryList = BudgetEntryDbManager.getEntriesInRange(StatsActivity.this, startDate, endDate);
                 categorySumList = computeCategorySums();
 
-                populateCategorySummaryTable();
+                initializeCategorySummaryTable();
                 initializePieChart();
             }
         };
@@ -151,8 +147,8 @@ public class StatsActivity extends AppCompatActivity {
         });
     }
 
-    /** Populates the category summary table with values from the category sums. */
-    private void populateCategorySummaryTable() {
+    /** Creates the category summary table with values from the category sums. */
+    private void initializeCategorySummaryTable() {
         TableLayout table = (TableLayout) findViewById(R.id.categoryTable);
         table.removeAllViews();
 
@@ -224,6 +220,7 @@ public class StatsActivity extends AppCompatActivity {
         chart.setDescription(description);
         chart.setEntryLabelColor(Color.BLACK);
         chart.getLegend().setWordWrapEnabled(true);
+        chart.animateX(1000);
         chart.invalidate();
     }
 
