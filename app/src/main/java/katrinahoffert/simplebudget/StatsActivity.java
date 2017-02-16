@@ -68,6 +68,7 @@ public class StatsActivity extends AppCompatActivity {
         entryList = BudgetEntryDbManager.getEntriesInRange(this, startDate, endDate);
         categorySumList = computeCategorySums();
 
+        initializeNetBalance();
         initializeCategorySummaryTable();
         initializePieChart();
     }
@@ -122,6 +123,7 @@ public class StatsActivity extends AppCompatActivity {
                 entryList = BudgetEntryDbManager.getEntriesInRange(StatsActivity.this, startDate, endDate);
                 categorySumList = computeCategorySums();
 
+                initializeNetBalance();
                 initializeCategorySummaryTable();
                 initializePieChart();
             }
@@ -147,20 +149,25 @@ public class StatsActivity extends AppCompatActivity {
         });
     }
 
+    private void initializeNetBalance() {
+        TextView balanceText = (TextView) findViewById(R.id.balanceText);
+
+        if(categorySumList.isEmpty()) {
+            balanceText.setText(R.string.statsNoEntries);
+        }
+        else {
+            int balance = 0;
+            for(CategorySum sum : categorySumList)  balance += sum.amount;
+            balanceText.setText(String.format(getString(R.string.statsBalanceText), balance / 100.0));
+        }
+    }
+
     /** Creates the category summary table with values from the category sums. */
     private void initializeCategorySummaryTable() {
         TableLayout table = (TableLayout) findViewById(R.id.categoryTable);
         table.removeAllViews();
 
-        if(categorySumList.isEmpty()) {
-            TableRow row = new TableRow(this);
-            TextView placeholder = new TextView(this);
-            placeholder.setText(R.string.statsNoEntries);
-            row.addView(placeholder);
-            table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-
-            return;
-        }
+        if(categorySumList.isEmpty()) return;
 
         // Create the header
         TableRow header = new TableRow(this);

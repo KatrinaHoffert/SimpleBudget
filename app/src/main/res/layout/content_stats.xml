@@ -50,6 +50,14 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/statsBalanceText"
+                android:id="@+id/balanceText"
+                android:gravity="center_horizontal" />
+
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

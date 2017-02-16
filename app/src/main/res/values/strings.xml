@@ -20,4 +20,5 @@
     <string name="statsHeaderSpendings">Spendings</string>
     <string name="statsHeaderCategory">Category</string>
     <string name="statsNoEntries">No entries in this time period</string>
+    <string name="statsBalanceText">Net balance for this period: $%.2f</string>
 </resources>
