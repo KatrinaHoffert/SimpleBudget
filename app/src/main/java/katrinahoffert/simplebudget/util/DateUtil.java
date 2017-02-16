@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtil {
+    /** Converts an ISO 8601 date string (eg, "2017-02-15") into a Date object. */
     public static Date iso8601StringToDate(String date) {
         try {
             return new SimpleDateFormat("yyyy-MM-dd").parse(date);
