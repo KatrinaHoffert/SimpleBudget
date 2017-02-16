@@ -97,6 +97,16 @@ public class StatsActivity extends AppCompatActivity {
     private void populateCategorySummaryTable() {
         TableLayout table = (TableLayout) findViewById(R.id.categoryTable);
 
+        if(categorySumList.isEmpty()) {
+            TableRow row = new TableRow(this);
+            TextView placeholder = new TextView(this);
+            placeholder.setText(R.string.statsNoEntries);
+            row.addView(placeholder);
+            table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+            return;
+        }
+
         // Create the header
         TableRow header = new TableRow(this);
         TextView categoryHeader = new TextView(this);
@@ -121,7 +131,12 @@ public class StatsActivity extends AppCompatActivity {
         }
     }
 
+    /** Initializes the pie chart with data to display. */
     private void initializePieChart() {
+        PieChart chart = (PieChart) findViewById(R.id.categoryPieChart);
+        if(categorySumList.isEmpty()) chart.setVisibility(View.GONE);
+        else chart.setVisibility(View.VISIBLE);
+
         List<PieEntry> pieChartEntries = new ArrayList<>();
         for(CategorySum sum : categorySumList) {
             pieChartEntries.add(new PieEntry(sum.amount / 100f, sum.category));
@@ -142,7 +157,6 @@ public class StatsActivity extends AppCompatActivity {
         PieDataSet dataSet = new PieDataSet(pieChartEntries, "");
         dataSet.setColors(colors);
 
-        PieChart chart = (PieChart) findViewById(R.id.categoryPieChart);
         PieData data = new PieData(dataSet);
         chart.setData(data);
 

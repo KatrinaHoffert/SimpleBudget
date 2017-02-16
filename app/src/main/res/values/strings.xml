@@ -19,4 +19,5 @@
     <string name="title_activity_stats">StatsActivity</string>
     <string name="statsHeaderSpendings">Spendings</string>
     <string name="statsHeaderCategory">Category</string>
+    <string name="statsNoEntries">No entries in this time period</string>
 </resources>
