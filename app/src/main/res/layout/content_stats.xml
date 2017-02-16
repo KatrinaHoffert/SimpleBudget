@@ -56,13 +56,16 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/statsBalanceText"
                 android:id="@+id/balanceText"
-                android:gravity="center_horizontal" />
+                android:gravity="center_horizontal"
+                android:paddingTop="@dimen/small_text_padding"
+                android:paddingBottom="@dimen/small_text_padding" />
 
             <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/categoryTable"
-                android:stretchColumns="0,1"></TableLayout>
+                android:stretchColumns="0,1"
+                android:paddingBottom="@dimen/small_text_padding"></TableLayout>
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/categoryPieChart"
