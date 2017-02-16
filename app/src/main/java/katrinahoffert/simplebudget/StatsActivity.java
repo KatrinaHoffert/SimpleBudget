@@ -35,7 +35,9 @@ public class StatsActivity extends AppCompatActivity {
             throw new RuntimeException("The date should never be invalid");
         }
 
-        TextView t = (TextView) findViewById(R.id.textView);
-        t.setText(startDate + " to " + endDate);
+        TextView startDateInput = (TextView) findViewById(R.id.startDateInput);
+        startDateInput.setText(startDate);
+        TextView endDateInput = (TextView) findViewById(R.id.endDateInput);
+        endDateInput.setText(endDate);
     }
 }

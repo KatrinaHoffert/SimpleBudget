@@ -12,9 +12,25 @@
     tools:context="katrinahoffert.simplebudget.StatsActivity"
     tools:showIn="@layout/activity_stats">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView" />
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:id="@+id/startDateInput"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:id="@+id/endDateInput"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
 </RelativeLayout>
