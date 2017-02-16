@@ -16,4 +16,5 @@
     <string name="title_activity_add_edit_budget_entry">SimpleBudget</string>
     <string name="editEntrySuccess">Entry has been updated</string>
     <string name="add_entry_button">Add</string>
+    <string name="title_activity_stats">StatsActivity</string>
 </resources>

@@ -30,7 +30,16 @@
         <activity
             android:name=".AddEditBudgetEntryActivity"
             android:label="@string/title_activity_add_edit_budget_entry"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".StatsActivity"
+            android:label="@string/title_activity_stats"
+            android:parentActivityName=".CalendarActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="katrinahoffert.simplebudget.CalendarActivity" />
+        </activity>
     </application>
 
 </manifest>

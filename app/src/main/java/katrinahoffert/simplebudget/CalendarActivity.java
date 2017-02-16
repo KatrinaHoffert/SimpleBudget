@@ -31,7 +31,14 @@ import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
 
 public class CalendarActivity extends AppCompatActivity {
+    /**
+     * The budget entries for the selected date (used so that our menu menu selection can get extra
+     * info on the selected entry.
+     */
     private List<BudgetEntry> selectedEntries;
+
+    /** The month that is currently displayed. Specifically the first day of that month. */
+    private CalendarDay displayedMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,17 @@ public class CalendarActivity extends AppCompatActivity {
                 CalendarActivity.this.startActivity(intent);
             }
         });
+
+        Button statsButton = (Button) findViewById(R.id.monthStatsButton);
+        statsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
+                Intent intent = new Intent(CalendarActivity.this, StatsActivity.class);
+                intent.putExtra("date", calendarDayToString(displayedMonth));
+                CalendarActivity.this.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -68,13 +86,15 @@ public class CalendarActivity extends AppCompatActivity {
      */
     private void initializeCalendar() {
         final MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
-        CalendarDay today = new CalendarDay(new Date());
+        CalendarDay today = CalendarDay.from(new Date());
 
         updateDecoration(calendar, today.getYear(), today.getMonth());
+        displayedMonth = CalendarDay.from(today.getYear(), today.getMonth(), 1);
         calendar.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 updateDecoration(calendar, date.getYear(), date.getMonth());
+                displayedMonth = CalendarDay.from(date.getYear(), date.getMonth(), 1);
             }
         });
 
@@ -204,7 +224,7 @@ public class CalendarActivity extends AppCompatActivity {
     private void updateCalendarAndEntryList() {
         MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
         updateSelection(calendar.getSelectedDate());
-        CalendarDay today = new CalendarDay(new Date());
+        CalendarDay today = CalendarDay.from(new Date());
         updateDecoration(calendar, today.getYear(), today.getMonth());
     }
 }
