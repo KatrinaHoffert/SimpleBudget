@@ -16,7 +16,7 @@
     <string name="title_activity_add_edit_budget_entry">SimpleBudget</string>
     <string name="editEntrySuccess">Entry has been updated</string>
     <string name="add_entry_button">Add</string>
-    <string name="title_activity_stats">StatsActivity</string>
+    <string name="title_activity_stats">SimpleBudget: Stats</string>
     <string name="statsHeaderSpendings">Spendings</string>
     <string name="statsHeaderCategory">Category</string>
     <string name="statsNoEntries">No entries in this time period</string>

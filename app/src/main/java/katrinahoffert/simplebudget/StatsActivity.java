@@ -213,6 +213,7 @@ public class StatsActivity extends AppCompatActivity {
         dataSet.setColors(colors);
 
         PieData data = new PieData(dataSet);
+        data.setValueTextSize(0); // Hide the numbers
         chart.setData(data);
 
         Description description = new Description();
