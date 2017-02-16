@@ -194,11 +194,12 @@ public class StatsActivity extends AppCompatActivity {
 
         List<PieEntry> pieChartEntries = new ArrayList<>();
         for(CategorySum sum : categorySumList) {
+            if(sum.amount <= 0) continue;
             pieChartEntries.add(new PieEntry(sum.amount / 100f, sum.category));
         }
 
         // Create unique colors that span the HSV spectrum
-        int[] colors = new int[categorySumList.size()];
+        int[] colors = new int[pieChartEntries.size()];
         float baseHue = 262f;
         float baseSaturation = 0.4f;
         float baseValue = 1.0f;
