@@ -1,5 +1,6 @@
 package katrinahoffert.simplebudget;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,13 @@ import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +69,7 @@ public class StatsActivity extends AppCompatActivity {
         categorySumList = computeCategorySums();
 
         populateCategorySummaryTable();
+        initializePieChart();
     }
 
     /** Computes the CategorySums from the entries inside this date range. */
@@ -110,6 +119,39 @@ public class StatsActivity extends AppCompatActivity {
             row.addView(spent);
             table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
+    }
+
+    private void initializePieChart() {
+        List<PieEntry> pieChartEntries = new ArrayList<>();
+        for(CategorySum sum : categorySumList) {
+            pieChartEntries.add(new PieEntry(sum.amount / 100f, sum.category));
+        }
+
+        // Create unique colors that span the HSV spectrum
+        int[] colors = new int[categorySumList.size()];
+        float baseHue = 262f;
+        float baseSaturation = 0.4f;
+        float baseValue = 1.0f;
+        float step = 360f / colors.length;
+
+        for(int i = 0; i < colors.length; ++i) {
+            float newHue = (baseHue + step * i) % 360;
+            colors[i] = Color.HSVToColor(new float[] { newHue, baseSaturation, baseValue });
+        }
+
+        PieDataSet dataSet = new PieDataSet(pieChartEntries, "");
+        dataSet.setColors(colors);
+
+        PieChart chart = (PieChart) findViewById(R.id.categoryPieChart);
+        PieData data = new PieData(dataSet);
+        chart.setData(data);
+
+        Description description = new Description();
+        description.setEnabled(false);
+        chart.setDescription(description);
+        chart.setEntryLabelColor(Color.BLACK);
+        chart.getLegend().setWordWrapEnabled(true);
+        chart.invalidate();
     }
 
     /** Represents the sum of spending inside a category */
