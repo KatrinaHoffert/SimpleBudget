@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
+import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
 
 public class MainActivity extends BudgetEntryBaseActivity {
@@ -23,6 +24,15 @@ public class MainActivity extends BudgetEntryBaseActivity {
                 MainActivity.this.startActivity(new Intent(MainActivity.this, CalendarActivity.class));
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Reload categories in case those were changed
+        categories =  CategoryDbManager.getCategories(this);
+        initializeCategories();
     }
 
     @Override
