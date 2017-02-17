@@ -42,7 +42,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
     /** Opens a prompt for a category name and upon receiving one, adds that category. */
     private void addCategory() {
-        GuiUtil.generateTextInputAlert(this,
+        GuiUtil.displayTextInputAlert(this,
                 getString(R.string.category_add_title),
                 getString(R.string.category_add_confirm_button),
                 getString(R.string.generic_cancel),
@@ -53,10 +53,10 @@ public class CategoriesActivity extends AppCompatActivity {
                             if (!input.equals("")) {
                                 CategoryDbManager.addCategory(CategoriesActivity.this, input);
                             } else {
-                                GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_input_error_message));
+                                GuiUtil.displaySimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_input_error_message));
                             }
                         } catch (IllegalArgumentException e) {
-                            GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_exists_error_message));
+                            GuiUtil.displaySimpleAlert(CategoriesActivity.this, getString(R.string.category_exists_error_message));
                         }
 
                         // Redraw the table
@@ -93,7 +93,7 @@ public class CategoriesActivity extends AppCompatActivity {
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GuiUtil.generateTextInputAlert(CategoriesActivity.this,
+                    GuiUtil.displayTextInputAlert(CategoriesActivity.this,
                             getString(R.string.category_edit_title),
                             getString(R.string.category_edit_confirm_button),
                             getString(R.string.generic_cancel),
@@ -101,7 +101,7 @@ public class CategoriesActivity extends AppCompatActivity {
                                 @Override
                                 public void action(String input) {
                                     if (input.equals("")) {
-                                        GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_input_error_message));
+                                        GuiUtil.displaySimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_input_error_message));
                                         return;
                                     }
 
@@ -120,7 +120,7 @@ public class CategoriesActivity extends AppCompatActivity {
             deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GuiUtil.generateConfirmationPrompt(
+                    GuiUtil.displayConfirmationPrompt(
                             CategoriesActivity.this,
                             getString(R.string.category_remove_title),
                             String.format(getString(R.string.category_remove_message), category.category),

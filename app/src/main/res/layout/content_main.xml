@@ -28,5 +28,5 @@
         android:id="@+id/calendarButton"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="62dp" />
+        android:layout_marginBottom="@dimen/calendar_button_offset_from_bottom" />
 </RelativeLayout>

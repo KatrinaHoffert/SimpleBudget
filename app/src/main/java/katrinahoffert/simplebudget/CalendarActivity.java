@@ -215,7 +215,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
         // Delete
         else if(item.getItemId() == 1) {
-            GuiUtil.generateConfirmationPrompt(
+            GuiUtil.displayConfirmationPrompt(
                     this,
                     getString(R.string.calendar_remove_title),
                     getString(R.string.calendar_remove_message),
