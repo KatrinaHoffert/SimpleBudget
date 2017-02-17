@@ -33,4 +33,7 @@
     <string name="add_category_button">Add new category</string>
     <string name="category_add_confirm_button">Add</string>
     <string name="add_category_title">Add category</string>
+    <string name="generic_okay">Ok</string>
+    <string name="category_exists_error_message">A category of that name already exists!</string>
+    <string name="category_empty_error">You must enter a name for the category.</string>
 </resources>

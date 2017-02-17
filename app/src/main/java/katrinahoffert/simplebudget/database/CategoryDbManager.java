@@ -15,7 +15,8 @@ import static katrinahoffert.simplebudget.database.DbContract.CategoryTable;
 
 public class CategoryDbManager {
     /**
-     * Adds a category to the database.
+     * Adds a category to the database. This fails if the category already exists (and is not deleted).
+     * If the category is deleted, then it is undeleted.
      * @param context The application context.
      * @param category The category to insert.
      */

@@ -22,6 +22,7 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.Category;
+import katrinahoffert.simplebudget.util.GuiUtil;
 
 public class CategoriesActivity extends AppCompatActivity {
     protected List<Category> categories;
@@ -47,6 +48,7 @@ public class CategoriesActivity extends AppCompatActivity {
         initializeCategoryTable();
     }
 
+    /** Opens a prompt for a category name and upon receiving one, adds that category. */
     private void addCategory() {
         final EditText categoryNameInput = new EditText(this);
         categoryNameInput.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -62,10 +64,19 @@ public class CategoriesActivity extends AppCompatActivity {
                 .setView(layout)
                 .setPositiveButton(R.string.category_add_confirm_button, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        CategoryDbManager.addCategory(CategoriesActivity.this, categoryNameInput.getText().toString().trim());
+                        try {
+                            String input = categoryNameInput.getText().toString().trim();
+                            if (!input.equals("")) {
+                                CategoryDbManager.addCategory(CategoriesActivity.this, input);
+                            } else {
+                                GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_error));
+                            }
+                        } catch (IllegalArgumentException e) {
+                            GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_exists_error_message));
+                        }
 
                         // Redraw the table
-                        categories =  CategoryDbManager.getCategories(CategoriesActivity.this);
+                        categories = CategoryDbManager.getCategories(CategoriesActivity.this);
                         initializeCategoryTable();
                     }
                 })
@@ -77,6 +88,12 @@ public class CategoriesActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Initializes the category table, recreating it from scratch with rows containing the category
+     * name and buttons to edit and remove that category. Event handlers are attached to those buttons.
+     * The edit button opens a prompt to rename the category (optionally cancelling). The remove
+     * button opens a confirmation prompt and on confirmation, removes the category.
+     */
     private void initializeCategoryTable() {
         TableLayout table = (TableLayout) findViewById(R.id.categoryEditTable);
         table.removeAllViews();
