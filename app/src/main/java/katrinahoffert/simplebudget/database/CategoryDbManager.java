@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import katrinahoffert.simplebudget.model.BudgetEntry;
 import katrinahoffert.simplebudget.model.Category;
 
 import static katrinahoffert.simplebudget.database.DbContract.CategoryTable;
@@ -25,6 +26,27 @@ public class CategoryDbManager {
         ContentValues values = new ContentValues();
         values.put(CategoryTable.COLUMN_NAME_CATEGORY_NAME, category);
         db.insert(CategoryTable.TABLE_NAME, null, values);
+        db.close();
+    }
+
+    /**
+     * Updates a category's name in the database.
+     * @param context The application context.
+     * @param category The category we're updating.
+     */
+    public static void updateCategoryName(Context context, Category category) {
+        DbManager dbManager = new DbManager(context);
+        SQLiteDatabase db = dbManager.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CategoryTable.COLUMN_NAME_CATEGORY_NAME, category.category);
+
+        db.update(
+                DbContract.CategoryTable.TABLE_NAME,
+                values,
+                DbContract.CategoryTable._ID + " = ?",
+                new String[]{Integer.toString(category._id)}
+        );
         db.close();
     }
 

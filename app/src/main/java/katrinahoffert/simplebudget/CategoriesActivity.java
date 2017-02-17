@@ -74,7 +74,8 @@ public class CategoriesActivity extends AppCompatActivity {
                             .setView(layout)
                             .setPositiveButton(R.string.category_save_button, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    Log.d("TODO", "Edit " + category._id + ": " + categoryNameInput.getText().toString());
+                                    category.category = categoryNameInput.getText().toString();
+                                    CategoryDbManager.updateCategoryName(CategoriesActivity.this, category);
 
                                     // Redraw the table
                                     categories =  CategoryDbManager.getCategories(CategoriesActivity.this);
