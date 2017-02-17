@@ -30,4 +30,7 @@
     <string name="category_remove_confirmation">Are you sure you want to remove the category \"%s\"?</string>
     <string name="category_remove_title">Remove category</string>
     <string name="category_remove_confirm_button">Remove</string>
+    <string name="add_category_button">Add new category</string>
+    <string name="category_add_confirm_button">Add</string>
+    <string name="add_category_title">Add category</string>
 </resources>

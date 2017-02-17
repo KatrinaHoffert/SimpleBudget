@@ -23,9 +23,39 @@ public class CategoryDbManager {
         DbManager dbManager = new DbManager(context);
         SQLiteDatabase db = dbManager.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(CategoryTable.COLUMN_NAME_CATEGORY_NAME, category);
-        db.insert(CategoryTable.TABLE_NAME, null, values);
+        // Don't allow adding if there's already a non-deleted category with that name
+        Cursor cursor = db.query(
+                CategoryTable.TABLE_NAME,
+                new String[]{CategoryTable._ID},
+                CategoryTable.COLUMN_NAME_IS_DELETED + " = 0 AND " + CategoryTable.COLUMN_NAME_CATEGORY_NAME + " = ?",
+                new String[]{category},
+                null,
+                null,
+                null
+        );
+
+        if(cursor.getCount() > 0) {
+            cursor.close();
+            throw new IllegalArgumentException("Category with name already exists");
+        }
+        cursor.close();
+
+        // Check if there's a deleted category that can be re-enabled
+        ContentValues updateValues = new ContentValues();
+        updateValues.put(CategoryTable.COLUMN_NAME_IS_DELETED, 0);
+
+        int count = db.update(
+                DbContract.CategoryTable.TABLE_NAME,
+                updateValues,
+                CategoryTable.COLUMN_NAME_CATEGORY_NAME + " = ?",
+                new String[]{category}
+        );
+        if(count > 0) return;
+
+        // Otherwise add it as normal
+        ContentValues insertValues = new ContentValues();
+        insertValues.put(CategoryTable.COLUMN_NAME_CATEGORY_NAME, category);
+        db.insert(CategoryTable.TABLE_NAME, null, insertValues);
         db.close();
     }
 

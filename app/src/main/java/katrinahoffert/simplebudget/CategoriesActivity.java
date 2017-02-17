@@ -36,7 +36,45 @@ public class CategoriesActivity extends AppCompatActivity {
 
         categories =  CategoryDbManager.getCategories(this);
 
+        Button addCategoryButton = (Button) findViewById(R.id.addCategoryButton);
+        addCategoryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCategory();
+            }
+        });
+
         initializeCategoryTable();
+    }
+
+    private void addCategory() {
+        final EditText categoryNameInput = new EditText(this);
+        categoryNameInput.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        // Just the text edit is too squished -- add some padding
+        final LinearLayout layout = new LinearLayout(this);
+        int padding = getResources().getDimensionPixelOffset(R.dimen.textAlertDialogHorizontalPadding);
+        layout.setPadding(padding, 0, padding, 0);
+        layout.addView(categoryNameInput);
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.add_category_title)
+                .setView(layout)
+                .setPositiveButton(R.string.category_add_confirm_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        CategoryDbManager.addCategory(CategoriesActivity.this, categoryNameInput.getText().toString().trim());
+
+                        // Redraw the table
+                        categories =  CategoryDbManager.getCategories(CategoriesActivity.this);
+                        initializeCategoryTable();
+                    }
+                })
+                .setNegativeButton(R.string.category_cancel_button, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                })
+                .show();
     }
 
     private void initializeCategoryTable() {
