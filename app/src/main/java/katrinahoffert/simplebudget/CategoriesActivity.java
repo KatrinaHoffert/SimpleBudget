@@ -45,7 +45,7 @@ public class CategoriesActivity extends AppCompatActivity {
         GuiUtil.generateTextInputAlert(this,
                 getString(R.string.category_add_title),
                 getString(R.string.category_add_confirm_button),
-                getString(R.string.category_cancel_button),
+                getString(R.string.generic_cancel),
                 new Functional.Action1<String>() {
                     @Override
                     public void action(String input) {
@@ -96,7 +96,7 @@ public class CategoriesActivity extends AppCompatActivity {
                     GuiUtil.generateTextInputAlert(CategoriesActivity.this,
                             getString(R.string.category_edit_title),
                             getString(R.string.category_edit_confirm_button),
-                            getString(R.string.category_cancel_button),
+                            getString(R.string.generic_cancel),
                             new Functional.Action1<String>() {
                                 @Override
                                 public void action(String input) {
@@ -125,7 +125,7 @@ public class CategoriesActivity extends AppCompatActivity {
                             getString(R.string.category_remove_title),
                             String.format(getString(R.string.category_remove_message), category.category),
                             getString(R.string.category_remove_confirm_button),
-                            getString(R.string.category_cancel_button),
+                            getString(R.string.generic_cancel),
                             new Functional.Action() {
                                 @Override
                                 public void action() {

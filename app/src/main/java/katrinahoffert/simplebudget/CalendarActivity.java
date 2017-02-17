@@ -29,6 +29,8 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
+import katrinahoffert.simplebudget.util.Functional;
+import katrinahoffert.simplebudget.util.GuiUtil;
 
 public class CalendarActivity extends AppCompatActivity {
     /**
@@ -197,7 +199,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 
         // Edit
         if(item.getItemId() == 0) {
@@ -213,8 +215,20 @@ public class CalendarActivity extends AppCompatActivity {
         }
         // Delete
         else if(item.getItemId() == 1) {
-            BudgetEntryDbManager.deleteEntry(CalendarActivity.this, selectedEntries.get(info.position)._id);
-            updateCalendarAndEntryList();
+            GuiUtil.generateConfirmationPrompt(
+                    this,
+                    getString(R.string.calendar_remove_title),
+                    getString(R.string.calendar_remove_message),
+                    getString(R.string.calendar_remove_confirm_button),
+                    getString(R.string.generic_cancel),
+                    new Functional.Action() {
+                        @Override
+                        public void action() {
+                            BudgetEntryDbManager.deleteEntry(CalendarActivity.this, selectedEntries.get(info.position)._id);
+                            updateCalendarAndEntryList();
+                        }
+                    }
+            );
             return true;
         }
 

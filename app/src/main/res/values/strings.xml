@@ -13,6 +13,9 @@
     <string name="calendar_month_stats_button">Month stats</string>
     <string name="calendar_entry_edit">Edit</string>
     <string name="calendar_entry_remove">Remove</string>
+    <string name="calendar_remove_title">Remove entry</string>
+    <string name="calendar_remove_message">Are you sure you want to remove this entry? This cannot be undone!</string>
+    <string name="calendar_remove_confirm_button">Remove</string>
     <string name="stats_activity_title">SimpleBudget: Stats</string>
     <string name="stats_balance_label">Net balance for this period: $%.2f</string>
     <string name="stats_header_category">Category</string>
@@ -23,7 +26,6 @@
     <string name="category_remove_button">Remove</string>
     <string name="category_edit_title">Edit category</string>
     <string name="category_edit_confirm_button">Save</string>
-    <string name="category_cancel_button">Cancel</string>
     <string name="category_remove_title">Remove category</string>
     <string name="category_remove_message">Are you sure you want to remove the category \"%s\"?</string>
     <string name="category_remove_confirm_button">Remove</string>
@@ -33,4 +35,5 @@
     <string name="category_exists_error_message">A category of that name already exists!</string>
     <string name="category_empty_input_error_message">You must enter a name for the category.</string>
     <string name="generic_okay">Ok</string>
+    <string name="generic_cancel">Cancel</string>
 </resources>
