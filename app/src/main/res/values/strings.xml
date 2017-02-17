@@ -22,4 +22,12 @@
     <string name="statsNoEntries">No entries in this time period</string>
     <string name="statsBalanceText">Net balance for this period: $%.2f</string>
     <string name="title_activity_categories">SimpleBudget: Categories</string>
+    <string name="edit_category_title">Edit category</string>
+    <string name="category_edit_button">Edit</string>
+    <string name="category_remove_button">Remove</string>
+    <string name="category_save_button">Save</string>
+    <string name="category_cancel_button">Cancel</string>
+    <string name="category_remove_confirmation">Are you sure you want to remove the category \"%s\"?</string>
+    <string name="category_remove_title">Remove category</string>
+    <string name="category_remove_confirm_button">Remove</string>
 </resources>
