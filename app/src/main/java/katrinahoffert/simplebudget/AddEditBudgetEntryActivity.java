@@ -84,6 +84,9 @@ public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
             BudgetEntryDbManager.updateEntry(this, entry);
             Toast.makeText(this, getString(R.string.add_edit_edit_success), Toast.LENGTH_SHORT).show();
         }
+
+        // Close this activity and return to the calendar
+        finish();
     }
 
     /** The mode that this activity is in. We can either add a new budget entry or edit an existing one. */
