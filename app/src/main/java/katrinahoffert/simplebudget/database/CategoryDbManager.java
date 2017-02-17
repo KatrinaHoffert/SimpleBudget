@@ -62,7 +62,7 @@ public class CategoryDbManager {
         Cursor cursor = db.query(
                 CategoryTable.TABLE_NAME,
                 new String[]{CategoryTable._ID, CategoryTable.COLUMN_NAME_CATEGORY_NAME},
-                null,
+                CategoryTable.COLUMN_NAME_IS_DELETED + " = 0",
                 null,
                 null,
                 null,
@@ -80,5 +80,27 @@ public class CategoryDbManager {
         db.close();
 
         return categories;
+    }
+
+    /**
+     * Sets a category as deleted. This doesn't actually delete it, but flips a flag that prevents
+     * its usage in new entries.
+     * @param context The application context.
+     * @param id The ID of the category we're deleting.
+     */
+    public static void deleteCategoryName(Context context, int id) {
+        DbManager dbManager = new DbManager(context);
+        SQLiteDatabase db = dbManager.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CategoryTable.COLUMN_NAME_IS_DELETED, 1);
+
+        db.update(
+                DbContract.CategoryTable.TABLE_NAME,
+                values,
+                DbContract.CategoryTable._ID + " = ?",
+                new String[]{Integer.toString(id)}
+        );
+        db.close();
     }
 }

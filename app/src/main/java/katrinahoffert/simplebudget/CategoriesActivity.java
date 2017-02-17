@@ -99,7 +99,7 @@ public class CategoriesActivity extends AppCompatActivity {
                             .setMessage(String.format(getString(R.string.category_remove_confirmation), category.category))
                             .setPositiveButton(R.string.category_remove_confirm_button, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    Log.d("TODO", "Delete " + category._id);
+                                    CategoryDbManager.deleteCategoryName(CategoriesActivity.this, category._id);
 
                                     // Redraw the table
                                     categories =  CategoryDbManager.getCategories(CategoriesActivity.this);
