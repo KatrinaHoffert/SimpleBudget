@@ -40,17 +40,8 @@ public abstract class BudgetEntryBaseActivity extends AppCompatActivity {
 
         errorShakeAnim = AnimationUtils.loadAnimation(this, R.anim.shake);
 
-        // Load the categories and if we're in edit mode, identify the index of the category
-        // that should be selected.
         categories =  CategoryDbManager.getCategories(this);
-        String[] categoryNames = new String[categories.size()];
-        for(int i = 0; i < categories.size(); ++i) {
-            categoryNames[i] = categories.get(i).category;
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySelect = (Spinner) findViewById(R.id.categorySelect);
-        categorySelect.setAdapter(adapter);
+        initializeCategories();
 
         Button submitButton = (Button) findViewById(R.id.submitButton);
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +59,18 @@ public abstract class BudgetEntryBaseActivity extends AppCompatActivity {
         amountInput = (EditText) findViewById(R.id.amountInput);
 
         initializeDatePicker();
+    }
+
+    /** Creates the category spinner from the categories list. */
+    protected void initializeCategories() {
+        String[] categoryNames = new String[categories.size()];
+        for(int i = 0; i < categories.size(); ++i) {
+            categoryNames[i] = categories.get(i).category;
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categoryNames);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        categorySelect = (Spinner) findViewById(R.id.categorySelect);
+        categorySelect.setAdapter(adapter);
     }
 
     /**

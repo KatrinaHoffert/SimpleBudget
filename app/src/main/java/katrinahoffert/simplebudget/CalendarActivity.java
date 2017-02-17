@@ -204,6 +204,7 @@ public class CalendarActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddEditBudgetEntryActivity.class);
             intent.putExtra("mode", AddEditBudgetEntryActivity.AddEditActivityMode.EDIT);
             intent.putExtra("id", selectedEntries.get(info.position)._id);
+            intent.putExtra("category", selectedEntries.get(info.position).category);
             intent.putExtra("categoryId", selectedEntries.get(info.position).categoryId);
             intent.putExtra("amount", selectedEntries.get(info.position).amount);
             intent.putExtra("date", selectedEntries.get(info.position).date);

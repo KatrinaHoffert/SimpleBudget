@@ -3,12 +3,14 @@ package katrinahoffert.simplebudget;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
+import katrinahoffert.simplebudget.model.Category;
 
 public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
     private AddEditActivityMode mode;
@@ -26,7 +28,7 @@ public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
         // Initialize fields with previous values (note that date is initialized in BudgetEntryBaseActivity)
         if(mode == AddEditActivityMode.EDIT) {
             // Get the appropriate category of the event we're editing
-            int defaultSelected = 0;
+            int defaultSelected = -1;
             int categoryId = getIntent().getIntExtra("categoryId", -1);
             for(int i = 0; i < categories.size(); ++i) {
                 if(mode == AddEditActivityMode.EDIT) {
@@ -37,6 +39,17 @@ public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
             }
 
             Spinner categorySelect = (Spinner) findViewById(R.id.categorySelect);
+
+            // If the category in question was deleted, add it to the beginning for this entry only
+            if(defaultSelected == -1) {
+                Category deletedCategory = new Category();
+                deletedCategory.category = getIntent().getStringExtra("category");
+                deletedCategory._id = categoryId;
+                categories.add(0, deletedCategory);
+                initializeCategories();
+                defaultSelected = 0;
+            }
+
             categorySelect.setSelection(defaultSelected);
 
             // Initialize the amount input
