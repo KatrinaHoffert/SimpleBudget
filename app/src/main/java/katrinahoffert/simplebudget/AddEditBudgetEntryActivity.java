@@ -1,9 +1,7 @@
 package katrinahoffert.simplebudget;
 
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -79,12 +77,12 @@ public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
 
         if(mode == AddEditActivityMode.ADD) {
             BudgetEntryDbManager.addEntry(this, entry);
-            Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.add_edit_add_success), Toast.LENGTH_SHORT).show();
         }
         else {
             entry._id = id;
             BudgetEntryDbManager.updateEntry(this, entry);
-            Toast.makeText(this, getString(R.string.editEntrySuccess), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.add_edit_edit_success), Toast.LENGTH_SHORT).show();
         }
     }
 

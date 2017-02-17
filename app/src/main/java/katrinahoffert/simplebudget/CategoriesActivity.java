@@ -1,7 +1,5 @@
 package katrinahoffert.simplebudget;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -45,7 +43,7 @@ public class CategoriesActivity extends AppCompatActivity {
     /** Opens a prompt for a category name and upon receiving one, adds that category. */
     private void addCategory() {
         GuiUtil.generateTextInputAlert(this,
-                getString(R.string.add_category_title),
+                getString(R.string.category_add_title),
                 getString(R.string.category_add_confirm_button),
                 getString(R.string.category_cancel_button),
                 new Functional.Action1<String>() {
@@ -55,7 +53,7 @@ public class CategoriesActivity extends AppCompatActivity {
                             if (!input.equals("")) {
                                 CategoryDbManager.addCategory(CategoriesActivity.this, input);
                             } else {
-                                GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_error));
+                                GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_input_error_message));
                             }
                         } catch (IllegalArgumentException e) {
                             GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_exists_error_message));
@@ -96,8 +94,8 @@ public class CategoriesActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     GuiUtil.generateTextInputAlert(CategoriesActivity.this,
-                            getString(R.string.edit_category_title),
-                            getString(R.string.category_save_button),
+                            getString(R.string.category_edit_title),
+                            getString(R.string.category_edit_confirm_button),
                             getString(R.string.category_cancel_button),
                             new Functional.Action1<String>() {
                                 @Override
@@ -120,7 +118,7 @@ public class CategoriesActivity extends AppCompatActivity {
                     GuiUtil.generateConfirmationPrompt(
                             CategoriesActivity.this,
                             getString(R.string.category_remove_title),
-                            String.format(getString(R.string.category_remove_confirmation), category.category),
+                            String.format(getString(R.string.category_remove_message), category.category),
                             getString(R.string.category_remove_confirm_button),
                             getString(R.string.category_cancel_button),
                             new Functional.Action() {

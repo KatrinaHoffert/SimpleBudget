@@ -2,13 +2,10 @@ package katrinahoffert.simplebudget;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
@@ -59,6 +56,6 @@ public class MainActivity extends BudgetEntryBaseActivity {
 
         // Inform the user that the entry was added
         amountInput.setText("");
-        Toast.makeText(this, getString(R.string.submitEntrySuccess), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.add_edit_add_success), Toast.LENGTH_SHORT).show();
     }
 }

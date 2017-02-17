@@ -49,13 +49,13 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_entry_button"
+                    android:text="@string/calendar_add_button"
                     android:id="@+id/addButton" />
 
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/month_stats_button"
+                    android:text="@string/calendar_month_stats_button"
                     android:id="@+id/monthStatsButton" />
 
             </LinearLayout>
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/entries_header"
+                android:text="@string/calendar_date_header"
                 android:id="@+id/dateLabel"
                 android:layout_below="@+id/scrollView"
                 android:layout_alignParentLeft="true"

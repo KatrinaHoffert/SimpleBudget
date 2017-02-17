@@ -20,7 +20,7 @@
         </activity>
         <activity
             android:name=".CalendarActivity"
-            android:label="@string/title_activity_calendar"
+            android:label="@string/calendar_activity_title"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -29,11 +29,11 @@
         </activity>
         <activity
             android:name=".AddEditBudgetEntryActivity"
-            android:label="@string/title_activity_add_edit_budget_entry"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".StatsActivity"
-            android:label="@string/title_activity_stats"
+            android:label="@string/stats_activity_title"
             android:parentActivityName=".CalendarActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".CategoriesActivity"
-            android:label="@string/title_activity_categories"
+            android:label="@string/category_activity_title"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

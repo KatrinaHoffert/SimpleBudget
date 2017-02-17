@@ -160,7 +160,7 @@ public class CalendarActivity extends AppCompatActivity {
         selectedEntries = BudgetEntryDbManager.getEntriesInRange(this, iso8601Date, iso8601Date);
 
         TextView dateLabel = (TextView) findViewById(R.id.dateLabel);
-        dateLabel.setText(String.format(getResources().getString(R.string.entries_header), iso8601Date));
+        dateLabel.setText(String.format(getResources().getString(R.string.calendar_date_header), iso8601Date));
 
         String[] arrayEntryStrings = new String[selectedEntries.size()];
         for (int i = 0; i < arrayEntryStrings.length; ++i) {
@@ -169,7 +169,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         // Handle possibility of no entries
         if (selectedEntries.isEmpty()) {
-            arrayEntryStrings = new String[] { getResources().getString(R.string.no_entries) };
+            arrayEntryStrings = new String[] { getResources().getString(R.string.calendar_no_entries_error_message) };
         }
 
         NestedListView entryList = (NestedListView) findViewById(R.id.entryList);
@@ -190,8 +190,8 @@ public class CalendarActivity extends AppCompatActivity {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
             String title = String.format("$%.2f [%s]\n", selectedEntries.get(info.position).amount / 100.0, selectedEntries.get(info.position).category);
             menu.setHeaderTitle(title);
-            menu.add(Menu.NONE, 0, 0, getResources().getString(R.string.entry_edit));
-            menu.add(Menu.NONE, 1, 1, getResources().getString(R.string.entry_remove));
+            menu.add(Menu.NONE, 0, 0, getResources().getString(R.string.calendar_entry_edit));
+            menu.add(Menu.NONE, 1, 1, getResources().getString(R.string.calendar_entry_remove));
         }
     }
 

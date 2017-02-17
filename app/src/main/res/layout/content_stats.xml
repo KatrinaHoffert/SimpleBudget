@@ -54,7 +54,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/statsBalanceText"
+                android:text="@string/stats_balance_label"
                 android:id="@+id/balanceText"
                 android:gravity="center_horizontal"
                 android:paddingTop="@dimen/small_text_padding"

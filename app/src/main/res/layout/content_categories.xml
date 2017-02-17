@@ -23,7 +23,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/add_category_button"
+                android:text="@string/category_add_button"
                 android:id="@+id/addCategoryButton" />
 
             <TableLayout

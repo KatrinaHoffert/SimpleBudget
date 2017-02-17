@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/category_label"
+        android:text="@string/add_edit_category_label"
         android:id="@+id/categoryLabel"
         android:textSize="16dp"
         android:textAlignment="center"
@@ -41,7 +41,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/amount_label"
+        android:text="@string/add_edit_amount_label"
         android:id="@+id/amountLabel"
         android:textSize="16dp"
         android:textAlignment="center"
@@ -62,7 +62,7 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/submitButton"
+        android:text="@string/add_edit_submit_button"
         android:id="@+id/submitButton"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/amountInput"

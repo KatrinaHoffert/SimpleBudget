@@ -153,12 +153,12 @@ public class StatsActivity extends AppCompatActivity {
         TextView balanceText = (TextView) findViewById(R.id.balanceText);
 
         if(categorySumList.isEmpty()) {
-            balanceText.setText(R.string.statsNoEntries);
+            balanceText.setText(R.string.stats_no_entries_error_message);
         }
         else {
             int balance = 0;
             for(CategorySum sum : categorySumList)  balance += sum.amount;
-            balanceText.setText(String.format(getString(R.string.statsBalanceText), balance / 100.0));
+            balanceText.setText(String.format(getString(R.string.stats_balance_label), balance / 100.0));
         }
     }
 
@@ -172,11 +172,11 @@ public class StatsActivity extends AppCompatActivity {
         // Create the header
         TableRow header = new TableRow(this);
         TextView categoryHeader = new TextView(this);
-        categoryHeader.setText(R.string.statsHeaderCategory);
+        categoryHeader.setText(R.string.stats_header_category);
         categoryHeader.setTypeface(null, Typeface.BOLD);
         header.addView(categoryHeader);
         TextView spentHeader = new TextView(this);
-        spentHeader.setText(R.string.statsHeaderSpendings);
+        spentHeader.setText(R.string.stats_header_spending);
         spentHeader.setTypeface(null, Typeface.BOLD);
         header.addView(spentHeader);
         table.addView(header, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
