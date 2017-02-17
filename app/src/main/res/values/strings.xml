@@ -3,10 +3,11 @@
     <string name="action_modify_categories">Modify categories</string>
     <string name="add_edit_category_label">Category</string>
     <string name="add_edit_amount_label">Amount</string>
-    <string name="add_edit_submit_button">Log</string>
+    <string name="add_edit_add_submit_button">Log</string>
+    <string name="add_edit_edit_submit_button">Save</string>
     <string name="add_edit_add_success">Entry has been recorded</string>
-    <string name="calendar_activity_title">SimpleBudget: Calendar</string>
     <string name="add_edit_edit_success">Entry has been updated</string>
+    <string name="calendar_activity_title">SimpleBudget: Calendar</string>
     <string name="calendar_add_button">Add</string>
     <string name="calendar_date_header">Entries on %s:</string>
     <string name="calendar_no_entries_error_message">There\'s nothing here...</string>

@@ -2,6 +2,7 @@ package katrinahoffert.simplebudget;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -55,6 +56,10 @@ public class AddEditBudgetEntryActivity extends BudgetEntryBaseActivity {
             String amountString = String.format("%d.%02d", amount / 100, Math.abs(amount % 100));
             EditText amountInput = (EditText) findViewById(R.id.amountInput);
             amountInput.setText(amountString);
+
+            // Change the label of the submit button to make it clear that it saves
+            Button submitButton = (Button) findViewById(R.id.submitButton);
+            submitButton.setText(R.string.add_edit_edit_submit_button);
         }
     }
 
