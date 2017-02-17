@@ -100,6 +100,11 @@ public class CategoriesActivity extends AppCompatActivity {
                             new Functional.Action1<String>() {
                                 @Override
                                 public void action(String input) {
+                                    if (input.equals("")) {
+                                        GuiUtil.generateSimpleAlert(CategoriesActivity.this, getString(R.string.category_empty_input_error_message));
+                                        return;
+                                    }
+
                                     category.category = input;
                                     CategoryDbManager.updateCategoryName(CategoriesActivity.this, category);
 
