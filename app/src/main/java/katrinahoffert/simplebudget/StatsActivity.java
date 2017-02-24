@@ -142,7 +142,7 @@ public class StatsActivity extends AppCompatActivity {
 
                 // Max date is exclusive, so add a day to it
                 long millisecondsInADay = 1000 * 60 * 60 * 24;
-                if (maxDate != null) dialog.getDatePicker().setMaxDate(DateUtil.iso8601StringToDate(maxDate).getTime() + millisecondsInADay);
+                if (maxDate != null) dialog.getDatePicker().setMaxDate(DateUtil.iso8601StringToDate(maxDate).getTime());
 
                 dialog.show();
             }
