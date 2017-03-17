@@ -55,11 +55,11 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberSigned|numberDecimal"
         android:ems="10"
         android:id="@+id/amountInput"
         android:layout_below="@+id/amountLabel"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:inputType="phone" />
 
     <Button
         android:layout_width="wrap_content"

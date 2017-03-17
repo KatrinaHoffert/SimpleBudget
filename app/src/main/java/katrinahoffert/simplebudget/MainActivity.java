@@ -2,6 +2,7 @@ package katrinahoffert.simplebudget;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.Date;
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
+import katrinahoffert.simplebudget.util.CurrencyFormatter;
 
 public class MainActivity extends BudgetEntryBaseActivity {
     /**
