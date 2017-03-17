@@ -31,6 +31,7 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
+import katrinahoffert.simplebudget.util.CurrencyFormatter;
 import katrinahoffert.simplebudget.util.Functional;
 import katrinahoffert.simplebudget.util.GuiUtil;
 
@@ -179,7 +180,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         String[] arrayEntryStrings = new String[selectedEntries.size()];
         for (int i = 0; i < arrayEntryStrings.length; ++i) {
-            arrayEntryStrings[i] = String.format("$%.2f [%s]\n", selectedEntries.get(i).amount / 100.0, selectedEntries.get(i).category);
+            String amount = CurrencyFormatter.format(this, selectedEntries.get(i).amount);
+            arrayEntryStrings[i] = String.format("%s [%s]\n", amount, selectedEntries.get(i).category);
         }
 
         // Handle possibility of no entries
@@ -203,7 +205,8 @@ public class CalendarActivity extends AppCompatActivity {
         // Create the menu for long pressing an entry
         if(v.getId() == R.id.entryList) {
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-            String title = String.format("$%.2f [%s]\n", selectedEntries.get(info.position).amount / 100.0, selectedEntries.get(info.position).category);
+            String amount = CurrencyFormatter.format(this, selectedEntries.get(info.position).amount);
+            String title = String.format("%s [%s]\n", amount, selectedEntries.get(info.position).category);
             menu.setHeaderTitle(title);
             menu.add(Menu.NONE, 0, 0, getResources().getString(R.string.calendar_entry_edit));
             menu.add(Menu.NONE, 1, 1, getResources().getString(R.string.calendar_entry_remove));

@@ -19,7 +19,7 @@
     <string name="calendar_remove_message">Are you sure you want to remove this entry? This cannot be undone!</string>
     <string name="calendar_remove_confirm_button">Remove</string>
     <string name="stats_activity_title">SimpleBudget: Stats</string>
-    <string name="stats_balance_label">Net balance for this period: $%.2f</string>
+    <string name="stats_balance_label">Net balance for this period: %s</string>
     <string name="stats_header_category">Category</string>
     <string name="stats_header_spending">Spendings</string>
     <string name="stats_no_entries_error_message">No entries in this time period</string>

@@ -29,6 +29,7 @@ import java.util.List;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
+import katrinahoffert.simplebudget.util.CurrencyFormatter;
 import katrinahoffert.simplebudget.util.DateUtil;
 
 public class StatsActivity extends AppCompatActivity {
@@ -158,7 +159,8 @@ public class StatsActivity extends AppCompatActivity {
         else {
             int balance = 0;
             for(CategorySum sum : categorySumList)  balance += sum.amount;
-            balanceText.setText(String.format(getString(R.string.stats_balance_label), balance / 100.0));
+            String balanceFormatted = CurrencyFormatter.format(this, balance);
+            balanceText.setText(String.format(getString(R.string.stats_balance_label), balanceFormatted));
         }
     }
 
@@ -187,7 +189,7 @@ public class StatsActivity extends AppCompatActivity {
             category.setText(sum.category);
             row.addView(category);
             TextView spent = new TextView(this);
-            spent.setText(String.format("$%.2f", sum.amount / 100.0));
+            spent.setText(CurrencyFormatter.format(this, sum.amount));
             row.addView(spent);
             table.addView(row, new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
         }
