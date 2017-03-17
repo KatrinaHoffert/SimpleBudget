@@ -6,13 +6,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import katrinahoffert.simplebudget.database.BudgetEntryDbManager;
 import katrinahoffert.simplebudget.database.CategoryDbManager;
 import katrinahoffert.simplebudget.model.BudgetEntry;
 
 public class MainActivity extends BudgetEntryBaseActivity {
+    /**
+     * A timestamp for when this app was last active. Not necessarily up to date, since we only
+     * check for this when the app resumes (and hence it's set on pause). Lets us determine how
+     * long it's been since the app was last seen.
+     */
+    private long lastActiveTime = System.currentTimeMillis();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -33,6 +44,23 @@ public class MainActivity extends BudgetEntryBaseActivity {
         // Reload categories in case those were changed
         categories =  CategoryDbManager.getCategories(this);
         initializeCategories();
+
+        // If the app hasn't been seen for more than an hour, reset the date to the current. This
+        // helps avoid the case of the app being minimized for many days and then when it's brought
+        // up, the date picker is still on whatever day we started the app on. We don't want to always
+        // update it to the current, though, because that would end up reseting the date every
+        // time the user flips away for a second!
+        long hourInMs = 1000 * 60 * 60;
+        if(lastActiveTime + hourInMs < System.currentTimeMillis()) {
+            dateInput = (EditText) findViewById(R.id.dateInput);
+            dateInput.setText(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        lastActiveTime = System.currentTimeMillis();
     }
 
     @Override
