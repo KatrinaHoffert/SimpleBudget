@@ -2,6 +2,7 @@ package katrinahoffert.simplebudget;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -23,6 +24,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -89,6 +91,17 @@ public class CalendarActivity extends AppCompatActivity {
     private void initializeCalendar() {
         final MaterialCalendarView calendar = (MaterialCalendarView) findViewById(R.id.calendarView);
         CalendarDay today = CalendarDay.from(new Date());
+
+        String firstDayOfTheWeek = PreferenceManager.getDefaultSharedPreferences(this).getString("starting_day_of_the_week", null);
+        if (firstDayOfTheWeek.equals("monday")) {
+            calendar.state().edit().setFirstDayOfWeek(Calendar.MONDAY).commit();
+        }
+        else if(firstDayOfTheWeek.equals("saturday")) {
+            calendar.state().edit().setFirstDayOfWeek(Calendar.SATURDAY).commit();
+        }
+        else {
+            calendar.state().edit().setFirstDayOfWeek(Calendar.SUNDAY).commit();
+        }
 
         updateDecoration(calendar, today.getYear(), today.getMonth());
         displayedMonth = CalendarDay.from(today.getYear(), today.getMonth(), 1);

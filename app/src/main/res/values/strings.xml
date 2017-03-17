@@ -43,26 +43,38 @@
     <!-- Strings related to Settings -->
     <string name="pref_header_general">General</string>
     <string name="pref_starting_day_of_the_week">Starting day of the week</string>
-    <string-array name="pref_starting_day_of_the_week_values">
+    <string-array name="pref_starting_day_of_the_week_keys">
         <item>Saturday</item>
         <item>Sunday</item>
         <item>Monday</item>
+    </string-array>
+    <!-- DON'T TRANSLATE -->
+    <string-array name="pref_starting_day_of_the_week_values">
+        <item>saturday</item>
+        <item>sunday</item>
+        <item>monday</item>
     </string-array>
 
     <string name="pref_header_currency">Currency</string>
     <string name="pref_currency_symbol">Currency symbol</string>
     <string name="pref_currency_symbol_placement">Placement of currency symbol</string>
-    <string name="pref_currency_symbol_placement_left">Left</string>
-    <string name="pref_currency_symbol_placement_right">Right</string>
+    <string-array name="pref_currency_symbol_placement_keys">
+        <item>Left</item>
+        <item>Right</item>
+    </string-array>
+    <!-- DON'T TRANSLATE -->
     <string-array name="pref_currency_symbol_placement_values">
-        <item>@string/pref_currency_symbol_placement_left</item>
-        <item>@string/pref_currency_symbol_placement_right</item>
+        <item>left</item>
+        <item>right</item>
     </string-array>
     <string name="pref_decimal_separator">Decimal separator</string>
-    <string name="pref_decimal_separator_period">Period</string>
-    <string name="pref_decimal_separator_comma">Comma</string>
+    <string-array name="pref_decimal_separator_keys">
+        <item>Period</item>
+        <item>Comma</item>
+    </string-array>
+    <!-- DON'T TRANSLATE -->
     <string-array name="pref_decimal_separator_values">
-        <item>@string/pref_decimal_separator_period</item>
-        <item>@string/pref_decimal_separator_comma</item>
+        <item>.</item>
+        <item>,</item>
     </string-array>
 </resources>
