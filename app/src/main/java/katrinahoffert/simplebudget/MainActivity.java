@@ -81,6 +81,10 @@ public class MainActivity extends BudgetEntryBaseActivity {
             this.startActivity(new Intent(this, CategoriesActivity.class));
             return true;
         }
+        if (id == R.id.action_settings) {
+            this.startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

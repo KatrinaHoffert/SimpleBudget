@@ -1,0 +1,42 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_header_general"
+        android:key="pref_key_settings_general"
+        >
+        <ListPreference
+            android:title="@string/pref_starting_day_of_the_week"
+            android:key="starting_day_of_the_week"
+            android:entries="@array/pref_starting_day_of_the_week_values"
+            android:entryValues="@array/pref_starting_day_of_the_week_values"
+            android:defaultValue="Sunday"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_header_currency"
+        android:key="pref_key_settings_currency"
+        >
+        <EditTextPreference
+            android:title="@string/pref_currency_symbol"
+            android:key="currency_symbol"
+            android:defaultValue="$"
+            android:maxLines="1"
+            android:singleLine="true" />
+        <ListPreference
+            android:title="@string/pref_currency_symbol_placement"
+            android:key="currency_symbol_placement"
+            android:defaultValue="@string/pref_currency_symbol_placement_left"
+            android:entries="@array/pref_currency_symbol_placement_values"
+            android:entryValues="@array/pref_currency_symbol_placement_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+        <ListPreference
+            android:title="@string/pref_decimal_separator"
+            android:key="decimal_separator"
+            android:defaultValue="@string/pref_decimal_separator_period"
+            android:entries="@array/pref_decimal_separator_values"
+            android:entryValues="@array/pref_decimal_separator_values"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+    </PreferenceCategory>
+</PreferenceScreen>
