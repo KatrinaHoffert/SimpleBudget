@@ -12,6 +12,7 @@ import katrinahoffert.simplebudget.model.BudgetEntry;
 import katrinahoffert.simplebudget.model.Category;
 
 import static katrinahoffert.simplebudget.database.DbContract.CategoryTable;
+import static katrinahoffert.simplebudget.database.DbContract.BudgetEntryTable;
 
 public class CategoryDbManager {
     /**
@@ -133,5 +134,38 @@ public class CategoryDbManager {
                 new String[]{Integer.toString(id)}
         );
         db.close();
+    }
+
+    /**
+     * Gets the most recently used categories.
+     * @param context Application context.
+     * @param maxCategories The maximum number of categories we want.
+     * @return A list of categories that have been used most recently (date wise only, not based on
+     * when the user added the entry).
+     */
+    public static List<Category> getRecentlyUsedCategories(Context context, int maxCategories) {
+        DbManager dbManager = new DbManager(context);
+        SQLiteDatabase db = dbManager.getWritableDatabase();
+
+        String query = String.format("SELECT %s, %s FROM %s JOIN %s ON %s.%s = %s.%s WHERE %s = 0 GROUP BY %s ORDER BY %s DESC LIMIT %d",
+                CategoryTable.COLUMN_NAME_CATEGORY_NAME, BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, BudgetEntryTable.TABLE_NAME,
+                CategoryTable.TABLE_NAME, BudgetEntryTable.TABLE_NAME, BudgetEntryTable.COLUMN_NAME_CATEGORY_ID, CategoryTable.TABLE_NAME,
+                CategoryTable._ID, CategoryTable.COLUMN_NAME_IS_DELETED, CategoryTable.COLUMN_NAME_CATEGORY_NAME,
+                BudgetEntryTable.COLUMN_NAME_DATE, maxCategories);
+
+        Cursor cursor = db.rawQuery(query, new String[]{});
+
+        List<Category> categories = new ArrayList<>();
+
+        while(cursor.moveToNext()) {
+            Category category = new Category();
+            category.category = cursor.getString(cursor.getColumnIndexOrThrow(CategoryTable.COLUMN_NAME_CATEGORY_NAME));
+            category._id = cursor.getInt(cursor.getColumnIndexOrThrow(BudgetEntryTable.COLUMN_NAME_CATEGORY_ID));
+            categories.add(category);
+        }
+        cursor.close();
+        db.close();
+
+        return categories;
     }
 }
