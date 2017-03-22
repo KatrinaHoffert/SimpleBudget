@@ -1,14 +1,20 @@
 package katrinahoffert.simplebudget;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * A simple settings activity containing a fragment with all our settings.
@@ -98,6 +104,36 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference("currency_symbol"));
             bindPreferenceSummaryToValue(findPreference("currency_symbol_placement"));
             bindPreferenceSummaryToValue(findPreference("decimal_separator"));
+
+            // Make sure that the export option actually exports. There's no obvious way to save
+            // a file, so we'll throw it in downloads and pass it to the ACTION_SEND intent, which
+            // can let other applications handle it (eg, upload to dropbox).
+            Preference exportPreference = findPreference("export");
+            exportPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    try {
+                        File downloadsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                        downloadsFolder.mkdirs(); // ensure it exists
+
+                        String filePath = downloadsFolder + "/SimpleBudgetExported.csv";
+                        new Exporter().exportToTabDelimitedFile(getActivity().getApplicationContext(), filePath);
+
+                        // Make it public
+                        File exportedFile = new File(filePath);
+                        exportedFile.setReadable(true, false);
+
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(exportedFile));
+                        sendIntent.setType("*/*");
+                        startActivity(Intent.createChooser(sendIntent, getString(R.string.pref_export_action_send)));
+                    } catch (IOException e) {
+                        Log.e("SimpleBudget", "Couldn't export database to CSV", e);
+                    }
+                    return true;
+                }
+            });
         }
     }
 }

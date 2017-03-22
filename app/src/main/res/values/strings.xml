@@ -54,6 +54,9 @@
         <item>sunday</item>
         <item>monday</item>
     </string-array>
+    <string name="pref_export">Export data</string>
+    <string name="pref_export_summary">Exports all entries to a tab delimited file. File will be stored in the downloads folder.</string>
+    <string name="pref_export_action_send">(Optionally) send the file</string>
 
     <string name="pref_header_currency">Currency</string>
     <string name="pref_currency_symbol">Currency symbol</string>

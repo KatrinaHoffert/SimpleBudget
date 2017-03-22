@@ -11,6 +11,10 @@
             android:defaultValue="Sunday"
             android:negativeButtonText="@null"
             android:positiveButtonText="@null" />
+        <Preference
+            android:title="@string/pref_export"
+            android:key="export"
+            android:summary="@string/pref_export_summary" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="@string/pref_header_currency"
